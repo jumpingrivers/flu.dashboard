@@ -1,0 +1,6 @@
+^LICENSE\.md$
+^\.Rproj\.user$
+^\.pre-commit-config\.yaml$
+^flu-dashboard\.Rproj$
+^renv$
+^renv\.lock$
