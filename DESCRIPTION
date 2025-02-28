@@ -6,8 +6,11 @@ Authors@R:
 Description: Functions and Shiny application for processing and displaying
     counts of beds taken by laboratory-confirmed flu-cases.
 License: GPL (>= 3)
+Imports:
+    bslib,
+    shiny
 Suggests: 
-    precommit
+    pkgload
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
