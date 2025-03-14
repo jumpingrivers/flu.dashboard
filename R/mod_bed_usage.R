@@ -13,7 +13,8 @@ bed_usage_ui <- function(id,
   ns <- shiny::NS(id)
   shiny::tagList(
     shiny::h1(cause),
-    value_box_row_ui(id = ns("value_boxes"), cause = cause)
+    value_box_row_ui(id = ns("value_boxes"), cause = cause),
+    bed_usage_plot_ui(ns("plot"), cause = cause)
   )
 }
 
@@ -50,5 +51,6 @@ bed_usage_server <- function(id,
                          selected_trusts = selected_trusts,
                          filtered_data = filtered_data)
 
+    bed_usage_plot_server(id = "plot", filtered_data = filtered_data, cause = "flu")
   })
 }

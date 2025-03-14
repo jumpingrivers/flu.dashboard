@@ -11,8 +11,10 @@ Depends:
 Imports:
     bsicons,
     bslib (>= 0.9.0),
+    ggplot2,
     lubridate,
     pins (>= 1.0.0),
+    plotly,
     rlang,
     shiny (>= 1.5.0)
 Suggests: 
