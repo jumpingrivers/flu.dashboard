@@ -6,7 +6,7 @@
 #'
 #' @export
 run <- function(...) {
-  shiny::shinyApp(ui = ui, server = server, ...) # nolint: object_usage_linter
+  shiny::shinyApp(ui = ui, server = server, onStart = global, ...) # nolint: object_usage_linter
 }
 
 #' Run Development
@@ -16,6 +16,6 @@ run <- function(...) {
 #'
 #' @keywords internal
 run_dev <- function() {
-  file <- system.file("run/app.R", package = "flu.dashboard")
+  file <- system.file("run", "app.R", package = "flu.dashboard")
   shiny::shinyAppFile(file)
 }

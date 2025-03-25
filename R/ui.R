@@ -6,17 +6,21 @@
 #'
 #' @keywords internal
 ui <- function(req) {
-  shiny::navbarPage(
-    theme = bslib::bs_theme(version = 5),
-    title = "Flu dashboard",
+  bslib::page_navbar(
+    title = "Bed usage dashboard",
+    theme = bslib::bs_theme(
+      version = 5,
+      brand = system.file("brand", "_brand.yml", package = "flu.dashboard")
+    ),
     id = "main-menu",
+    sidebar = bslib::sidebar(trust_filter_ui(id = "trust_filter")),
     shiny::tabPanel(
-      "First tab",
-      shiny::h1("First tab")
+      title = "Flu",
+      bed_usage_ui(id = "flu", cause = "Flu")
     ),
     shiny::tabPanel(
-      "Second tab",
-      shiny::h1("Second tab")
+      title = "About",
+      shiny::h1("About")
     )
   )
 }
