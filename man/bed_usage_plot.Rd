@@ -7,7 +7,7 @@
 \usage{
 bed_usage_plot_ui(id, cause)
 
-bed_usage_plot_server(id, filtered_data)
+bed_usage_plot_server(id, filtered_data, cause)
 }
 \arguments{
 \item{id}{Unique Shiny module ID to link the UI and Server components together.}
