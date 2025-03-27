@@ -5,3 +5,4 @@
 ^flu-dashboard\.Rproj$
 ^renv$
 ^renv\.lock$
+^manifest.json$
