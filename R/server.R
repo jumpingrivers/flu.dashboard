@@ -9,5 +9,12 @@
 #' @noRd
 #' @keywords internal
 server <- function(input, output, session) {
+  selected_trusts <- trust_filter_server(id = "trust_filter")
 
+  bed_usage_server(
+    id = "flu",
+    board_ref = board_ref,
+    pin_name = "keith/nhs_flu_2025_full",
+    selected_trusts = selected_trusts
+  )
 }

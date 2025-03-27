@@ -1,0 +1,62 @@
+meta:
+  name: brand.yml
+  link: https://posit-dev.github.io/brand-yml
+
+logo:
+  images:
+    full:
+      path: assets/primary-wordmark.svg
+      alt: "Jumping Rivers logo"
+    icon:
+      path: assets/burgundy-lettermark.svg
+      alt: "Jumping Rivers logo"
+  small: icon
+  large: full
+
+color:
+  palette:
+    black: "#1A1A1A"
+    white: "#FCFBFA"
+    # JR primary colours
+    burgundy: "#490F3A"
+    coral: "#EA687E"
+    lilac: "#CCBFE0"
+    cream: "#F1EADE"
+    dark_blue: "#0C293D"
+    # JR secondary colours
+    yellow: "#FFB92E"
+    light_blue: "#C1D9EA"
+    light_brown: "#D6C4B6"
+  foreground: dark_blue
+  background: white
+  primary: burgundy
+  secondary: coral
+  tertiary: lilac
+  danger: pink
+  info: light_blue
+  light: cream
+  dark: dark_blue
+
+
+typography:
+  fonts:
+    - family: Outfit
+      source: google
+    - family: Space Mono
+      source: google
+    - family: Arial
+      source: system
+  base:
+    family: Outfit, Arial, sans-serif
+    weight: 300
+  headings:
+    family: Outfit, Arial, sans-serif
+    weight: 600
+    color: burgundy
+  monospace:
+    family: Space Mono, monospace
+    weight: 400
+  link:
+    weight: 300
+    color: burgundy
+    decoration: underline
