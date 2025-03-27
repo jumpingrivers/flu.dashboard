@@ -13,6 +13,7 @@ ui <- function(req) {
       brand = system.file("brand", "_brand.yml", package = "flu.dashboard")
     ),
     id = "main-menu",
+    lang = "en",
     sidebar = bslib::sidebar(trust_filter_ui(id = "trust_filter")),
     shiny::tabPanel(
       title = "Flu",

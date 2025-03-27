@@ -4377,13 +4377,13 @@
       "checksum": "2fe4d25d9e948d2f9a20063eecbe1f0f"
     },
     ".Rbuildignore": {
-      "checksum": "01429afccea2699399868688a9bbf58b"
+      "checksum": "72a96777620e04d7f5fb808b67ac8ec3"
     },
     ".Renviron": {
       "checksum": "8391f73315c02f22d79c64b9c7c9595e"
     },
     ".Rprofile": {
-      "checksum": "107fb993d932d265fb8784d605278b4a"
+      "checksum": "7184ae2168a196084841d97d6bb34533"
     },
     "app.R": {
       "checksum": "f3f36cce398a9cf8f3d620291ee5324f"
@@ -4479,7 +4479,7 @@
       "checksum": "e1d70b34441f2a96559dd844893791ec"
     },
     "R/ui.R": {
-      "checksum": "00b23989396410bc1cce1a9b01975eff"
+      "checksum": "3fbfe77cc335fa93aa9d473074c1688f"
     },
     "R/zzz.R": {
       "checksum": "41f784d2c11136c40f92f9ec365ae7c6"
