@@ -7,7 +7,13 @@
 \usage{
 bed_usage_ui(id, cause)
 
-bed_usage_server(id, board_ref, pin_name, selected_trusts)
+bed_usage_server(
+  id,
+  board_ref,
+  starting_year_end,
+  pin_name_template,
+  selected_trusts
+)
 }
 \arguments{
 \item{id}{Unique Shiny module ID to link the UI and Server components together.}
@@ -16,12 +22,16 @@ bed_usage_server(id, board_ref, pin_name, selected_trusts)
 unless capitalisation is needed to denote an acronym of proper noun, since this will be
 displayed as text in the middle of sentences where needed.}
 
-\item{board_ref}{A pointer to a Posit Connect board created by \link[pins:board_connect]{pins::board_connect} or an
+\item{board_ref}{A pointer to a Posit Connect board created by \code{\link[pins:board_connect]{pins::board_connect()}} or an
 alternative location.}
 
-\item{pin_name}{Name of the pin on the Posit Connect board containing the bed usage data for this
-particular illness. This data should have been pre-processed. If the data is in parquet format,
-then the nanoparquet package is required.}
+\item{starting_year_end}{The (numeric) year end of the first year of data that should be
+imported. e.g., if the first year of data covers the 2021-2022 season, then the year end is
+2022.}
+
+\item{pin_name_template}{Character template for the name of the pin containing the data. This
+uses \code{\link[=sprintf]{sprintf()}} notation, so use \verb{\%d} as a placeholder for where the year should be entered.
+If the data is in parquet format, then the nanoparquet package is required.}
 
 \item{selected_trusts}{Character vector of the trust ID codes that the user has selected in the
 filter.}

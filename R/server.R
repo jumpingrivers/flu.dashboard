@@ -14,7 +14,8 @@ server <- function(input, output, session) {
   bed_usage_server(
     id = "flu",
     board_ref = board_ref,
-    pin_name = "keith/nhs_flu_2025_full",
+    starting_year_end = 2022,
+    pin_name_template = "keith/nhs_flu_%d_full",
     selected_trusts = selected_trusts
   )
 }

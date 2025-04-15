@@ -29,11 +29,10 @@ value_box_row_ui <- function(id, cause) {
 #' @rdname value_box_row
 value_box_row_server <- function(id, selected_trusts, filtered_data) {
   shiny::moduleServer(id, function(input, output, session) {
-    output$number_of_filtered_trusts <- renderText(length(selected_trusts()))
+    output$number_of_filtered_trusts <- shiny::renderText(length(selected_trusts()))
 
-    output$current_bed_occupancy <- renderText({
-      current_usage <- filtered_data |>
-        purrr::chuck("full") |>
+    output$current_bed_occupancy <- shiny::renderText({
+      current_usage <- filtered_data() |>
         dplyr::slice_max(order_by = .data$date, n = 1, by = "code", with_ties = TRUE)
       formatC(
         sum(current_usage$occupancy, na.rm = TRUE),
