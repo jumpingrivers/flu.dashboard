@@ -6,3 +6,4 @@
 ^renv$
 ^renv\.lock$
 ^manifest.json$
+^rsconnect/

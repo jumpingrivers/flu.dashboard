@@ -12,7 +12,14 @@ value_box_change_ui <- function(id, period_label) {
   bslib::value_box(
     title = paste("Change since", period_label),
     value = shiny::textOutput(ns("difference")),
-    showcase = bsicons::bs_icon("arrow-up-right")
+    showcase = shiny::tagList(
+      shiny::conditionalPanel("output.difference > 0", ns = ns,
+                              bsicons::bs_icon("arrow-up-right")),
+      shiny::conditionalPanel("output.difference < 0", ns = ns,
+                              bsicons::bs_icon("arrow-down-right")),
+      shiny::conditionalPanel("output.difference == 0", ns = ns,
+                              bsicons::bs_icon("arrow-right"))
+    )
   )
 }
 
@@ -21,8 +28,8 @@ value_box_change_ui <- function(id, period_label) {
 #' @rdname value_box_change
 value_box_change_server <- function(id, filtered_data, time_period) {
   shiny::moduleServer(id, function(input, output, session) {
-    output$difference <- renderText({
-      change_over_time(filtered_data$full, time_period) |>
+    output$difference <- shiny::renderText({
+      change_over_time(filtered_data(), time_period) |>
         dplyr::pull("change") |>
         sum(na.rm = TRUE) |>
         formatC(format = "f", big.mark = ",", digits = 0L)
