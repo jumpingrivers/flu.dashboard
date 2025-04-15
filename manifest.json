@@ -4383,7 +4383,7 @@
       "checksum": "8391f73315c02f22d79c64b9c7c9595e"
     },
     ".Rprofile": {
-      "checksum": "7184ae2168a196084841d97d6bb34533"
+      "checksum": "ac9231e84e2910ffe3c9a2a884708a58"
     },
     "app.R": {
       "checksum": "f3f36cce398a9cf8f3d620291ee5324f"
@@ -4460,8 +4460,14 @@
     "R/mod_bed_usage.R": {
       "checksum": "b0094a3b56fff6669ad917313daf8bd6"
     },
+    "R/mod_trust_accordion.R": {
+      "checksum": "4eb64ef3152d12522bd6cbe69ab6e5f0"
+    },
     "R/mod_trust_filter.R": {
-      "checksum": "661ae5f69ac46ec7aa5c94256bc4e63e"
+      "checksum": "71bac25ff8c431c0b444877c666d5b75"
+    },
+    "R/mod_trust_single_region.R": {
+      "checksum": "52011465f2b711dcb051664bf8607bc9"
     },
     "R/mod_value_box_change.R": {
       "checksum": "facdf9f0918a5eb57b271f7103b8db9e"
@@ -4474,9 +4480,6 @@
     },
     "R/server.R": {
       "checksum": "e9002dd7d71e3f8cecd6caba899753bd"
-    },
-    "R/trust_accordion.R": {
-      "checksum": "e1d70b34441f2a96559dd844893791ec"
     },
     "R/ui.R": {
       "checksum": "3fbfe77cc335fa93aa9d473074c1688f"
