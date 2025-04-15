@@ -12,7 +12,14 @@ value_box_change_ui <- function(id, period_label) {
   bslib::value_box(
     title = paste("Change since", period_label),
     value = shiny::textOutput(ns("difference")),
-    showcase = bsicons::bs_icon("arrow-up-right")
+    showcase = shiny::tagList(
+      shiny::conditionalPanel("output.difference > 0", ns = ns,
+                              bsicons::bs_icon("arrow-up-right")),
+      shiny::conditionalPanel("output.difference < 0", ns = ns,
+                              bsicons::bs_icon("arrow-down-right")),
+      shiny::conditionalPanel("output.difference == 0", ns = ns,
+                              bsicons::bs_icon("arrow-right"))
+    )
   )
 }
 
