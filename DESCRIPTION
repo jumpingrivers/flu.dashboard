@@ -11,12 +11,16 @@ Depends:
 Imports:
     bsicons,
     bslib (>= 0.9.0),
+    dplyr,
     ggplot2,
     lubridate,
     pins (>= 1.0.0),
     plotly,
+    purrr,
     rlang,
-    shiny (>= 1.5.0)
+    shiny (>= 1.5.0),
+    tibble,
+    tidyr
 Suggests: 
     nanoparquet,
     pkgload
