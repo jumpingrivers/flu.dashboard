@@ -14,11 +14,14 @@ value_box_change_ui <- function(id, period_label) {
     value = shiny::textOutput(ns("difference")),
     showcase = shiny::tagList(
       shiny::conditionalPanel("output.difference > 0", ns = ns,
-                              bsicons::bs_icon("arrow-up-right")),
+                              bsicons::bs_icon("arrow-up-right"),
+                              class = "value-box-showcase"),
       shiny::conditionalPanel("output.difference < 0", ns = ns,
-                              bsicons::bs_icon("arrow-down-right")),
+                              bsicons::bs_icon("arrow-down-right"),
+                              class = "value-box-showcase"),
       shiny::conditionalPanel("output.difference == 0", ns = ns,
-                              bsicons::bs_icon("arrow-right"))
+                              bsicons::bs_icon("arrow-right"),
+                              class = "value-box-showcase")
     )
   )
 }
