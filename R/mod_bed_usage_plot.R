@@ -28,7 +28,7 @@ bed_usage_plot_ui <- function(id, cause) {
 bed_usage_plot_server <- function(id, filtered_data, cause) {
   shiny::moduleServer(id, function(input, output, session) {
     wide_usage <- shiny::reactive({
-      filtered_data$full |>
+      filtered_data() |>
         tidyr::pivot_wider(names_from = "bed_type", values_from = "occupancy") |>
         dplyr::rename(G_and_A = "G&A") |>
         dplyr::mutate(
@@ -40,12 +40,12 @@ bed_usage_plot_server <- function(id, filtered_data, cause) {
     })
 
     output$annual_time_series_plot <- plotly::renderPlotly({
-      usage_plot <- plot_annual_time_series(wide_usage())
+      usage_plot <- plot_annual_time_series(wide_usage(), cause = cause)
       plotly::ggplotly(usage_plot, tooltip = "text")
     })
 
     output$region_time_series_plot <- plotly::renderPlotly({
-      usage_plot <- plot_region_time_series(wide_usage())
+      usage_plot <- plot_region_time_series(wide_usage(), cause = cause)
       plotly::ggplotly(usage_plot, tooltip = "text")
     })
   })

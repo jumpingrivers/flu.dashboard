@@ -4,10 +4,14 @@
 \alias{plot_annual_time_series}
 \title{Create time series plot of data over multiple years}
 \usage{
-plot_annual_time_series(.data)
+plot_annual_time_series(.data, cause)
 }
 \arguments{
 \item{.data}{A data frame containing the time series data.}
+
+\item{cause}{Display name of the illness that a patient occupies a bed for. Write in lower case
+unless capitalisation is needed to denote an acronym of proper noun, since this will be
+displayed as text in the middle of sentences where needed.}
 }
 \value{
 A \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} of the time series of each year.

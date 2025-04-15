@@ -1,8 +1,9 @@
 #' Create time series plot of data over multiple years
 #'
 #' @param .data A data frame containing the time series data.
+#' @inheritParams bed_usage_plot_server
 #' @return A [ggplot2::ggplot()] of the time series of each year.
-plot_annual_time_series <- function(.data) {
+plot_annual_time_series <- function(.data, cause) {
   .data |>
     dplyr::group_by(.data$season, .data$date) |>
     dplyr::summarise(total = sum(.data$total, na.rm = TRUE),
