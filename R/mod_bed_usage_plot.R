@@ -10,14 +10,9 @@ bed_usage_plot_ui <- function(id, cause) {
     bslib::navset_card_pill(
       title = paste("Bed-usage due to", cause),
       placement = "above",
-      bslib::nav_panel(
-        title = "Annual comparison",
-        plotly::plotlyOutput(ns("annual_time_series_plot"))
-      ),
-      bslib::nav_panel(
-        title = "Regional comparison",
-        plotly::plotlyOutput(ns("region_time_series_plot"))
-      )
+      time_series_panel_ui(id = ns("annual"), panel_title = "Annual comparison"),
+      time_series_panel_ui(id = ns("region"), panel_title = "Regional comparison"),
+      wrapper = bslib::card
     )
   )
 }
@@ -39,14 +34,18 @@ bed_usage_plot_server <- function(id, filtered_data, cause) {
         )
     })
 
-    output$annual_time_series_plot <- plotly::renderPlotly({
-      usage_plot <- plot_annual_time_series(wide_usage(), cause = cause)
-      plotly::ggplotly(usage_plot, tooltip = "text")
-    })
+    # Annual time series plot ----
+    time_series_panel_server(id = "annual",
+                             .data = wide_usage,
+                             summary_fn = summarise_annual_time_series,
+                             plot_fn = plot_annual_time_series,
+                             cause = cause)
 
-    output$region_time_series_plot <- plotly::renderPlotly({
-      usage_plot <- plot_region_time_series(wide_usage(), cause = cause)
-      plotly::ggplotly(usage_plot, tooltip = "text")
-    })
+    # Regional time series plot for latest year ----
+    time_series_panel_server(id = "region",
+                             .data = wide_usage,
+                             summary_fn = summarise_region_time_series,
+                             plot_fn = plot_region_time_series,
+                             cause = cause)
   })
 }
