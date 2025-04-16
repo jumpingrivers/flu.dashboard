@@ -4383,7 +4383,7 @@
       "checksum": "8391f73315c02f22d79c64b9c7c9595e"
     },
     ".Rprofile": {
-      "checksum": "debfdbce16a328db8a8648a9690cb375"
+      "checksum": "6d805cb291abe3c21754b9bcc0b04696"
     },
     "app.R": {
       "checksum": "f3f36cce398a9cf8f3d620291ee5324f"
@@ -4473,7 +4473,7 @@
       "checksum": "b38bcf75525516e765433ba1a7905578"
     },
     "R/mod_bed_usage_plot.R": {
-      "checksum": "7a27579e8c9948f6c1aa6c56c68a9d55"
+      "checksum": "672c65f8a8846e89b57225d915ef53ce"
     },
     "R/mod_bed_usage.R": {
       "checksum": "c91fb8020a1e4e85f86fc95872544f31"
@@ -4482,7 +4482,7 @@
       "checksum": "05f490ac936d8e9245926103d070cb3f"
     },
     "R/mod_time_series_panel.R": {
-      "checksum": "f98036aac6cdf4f7d56d76709ff0915d"
+      "checksum": "f8474cdc6b710e04cf2158fd815ace12"
     },
     "R/mod_trust_accordion.R": {
       "checksum": "4eb64ef3152d12522bd6cbe69ab6e5f0"
@@ -4497,10 +4497,10 @@
       "checksum": "6384f1697798f420ba72b1bdf1e6142b"
     },
     "R/mod_value_box_row.R": {
-      "checksum": "3e0979e578641d508c0b85b3acb70c88"
+      "checksum": "7bf52ca8872f0c9bda8307ad09f1382e"
     },
     "R/plot_annual_time_series.R": {
-      "checksum": "48531dfc1511c1e6c61563c110c82fb8"
+      "checksum": "50f0170f900e83d0dc434c36bc78383e"
     },
     "R/plot_region_time_series.R": {
       "checksum": "86c8a8e6d78d4bb5527975247bf48374"

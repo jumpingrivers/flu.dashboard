@@ -27,7 +27,7 @@ plot_annual_time_series <- function(.data, cause) {
     ggplot2::labs(x = "Date",
                   y = "Beds occupied",
                   title = paste("Beds occupied due to laboratory-confirmed cases of", cause)) +
-    ggplot2::guides(colour = ggplot2::guide_legend(title = "NHS England Region")) +
+    ggplot2::guides(colour = ggplot2::guide_legend(title = "Season")) +
     ggplot2::theme_minimal() +
     ggplot2::theme(legend.position = "bottom")
 }

@@ -11,7 +11,8 @@ bed_usage_plot_ui <- function(id, cause) {
       title = paste("Bed-usage due to", cause),
       placement = "above",
       time_series_panel_ui(id = ns("annual"), panel_title = "Annual comparison"),
-      time_series_panel_ui(id = ns("region"), panel_title = "Regional comparison")
+      time_series_panel_ui(id = ns("region"), panel_title = "Regional comparison"),
+      wrapper = bslib::card
     )
   )
 }
