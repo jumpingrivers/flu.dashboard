@@ -4383,7 +4383,7 @@
       "checksum": "8391f73315c02f22d79c64b9c7c9595e"
     },
     ".Rprofile": {
-      "checksum": "cd684950dcecf7215dc69dbae2990af4"
+      "checksum": "debfdbce16a328db8a8648a9690cb375"
     },
     "app.R": {
       "checksum": "f3f36cce398a9cf8f3d620291ee5324f"
@@ -4434,10 +4434,10 @@
       "checksum": "71c9cf3d49729902a5bbf2ed09fd27ae"
     },
     "man/plot_annual_time_series.Rd": {
-      "checksum": "a3d8a67057265b7c91f1dff044f11019"
+      "checksum": "1f30b00e6b81e687066f8ba26933978c"
     },
     "man/plot_region_time_series.Rd": {
-      "checksum": "284c007997941244442c2c206704a3ab"
+      "checksum": "b7e75d63a4c13a895372fad5718d2c51"
     },
     "man/run_dev.Rd": {
       "checksum": "58dbe827717bc11c76133905f694a8a9"
@@ -4473,13 +4473,16 @@
       "checksum": "b38bcf75525516e765433ba1a7905578"
     },
     "R/mod_bed_usage_plot.R": {
-      "checksum": "dfaa3465e9d69dbe6d2630157c5d8848"
+      "checksum": "7a27579e8c9948f6c1aa6c56c68a9d55"
     },
     "R/mod_bed_usage.R": {
       "checksum": "c91fb8020a1e4e85f86fc95872544f31"
     },
     "R/mod_last_updated.R": {
       "checksum": "05f490ac936d8e9245926103d070cb3f"
+    },
+    "R/mod_time_series_panel.R": {
+      "checksum": "f98036aac6cdf4f7d56d76709ff0915d"
     },
     "R/mod_trust_accordion.R": {
       "checksum": "4eb64ef3152d12522bd6cbe69ab6e5f0"
@@ -4497,10 +4500,10 @@
       "checksum": "3e0979e578641d508c0b85b3acb70c88"
     },
     "R/plot_annual_time_series.R": {
-      "checksum": "af2399eaaa95862dc61017ae87fc5b2e"
+      "checksum": "48531dfc1511c1e6c61563c110c82fb8"
     },
     "R/plot_region_time_series.R": {
-      "checksum": "fb1de014cfe796ced40cbcd82fd325d5"
+      "checksum": "86c8a8e6d78d4bb5527975247bf48374"
     },
     "R/run.R": {
       "checksum": "fbf7ed47f024db3a7074940c50da1aa2"
