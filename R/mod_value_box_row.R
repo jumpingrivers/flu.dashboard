@@ -19,7 +19,8 @@ value_box_row_ui <- function(id, cause) {
       shiny::p("Based on number of laboratory-confirmed cases of ", cause)
     ),
     value_box_change_ui(id = ns("last_year"), period_label = "this time last year"),
-    value_box_change_ui(id = ns("last_week"), period_label = "one week ago")
+    value_box_change_ui(id = ns("last_week"), period_label = "one week ago"),
+    fill = FALSE
   )
 }
 

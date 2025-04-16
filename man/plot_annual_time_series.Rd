@@ -2,9 +2,12 @@
 % Please edit documentation in R/plot_annual_time_series.R
 \name{plot_annual_time_series}
 \alias{plot_annual_time_series}
-\title{Create time series plot of data over multiple years}
+\alias{summarise_annual_time_series}
+\title{Summarise and plot time series data over multiple years}
 \usage{
 plot_annual_time_series(.data, cause)
+
+summarise_annual_time_series(.data)
 }
 \arguments{
 \item{.data}{A data frame containing the time series data.}
@@ -14,8 +17,12 @@ unless capitalisation is needed to denote an acronym of proper noun, since this 
 displayed as text in the middle of sentences where needed.}
 }
 \value{
-A \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} of the time series of each year.
+For \code{plot_annual_time_series}, a \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} of the time series of each year.
+
+From \code{summarise_annual_time_series}, a data frame summarising the overall usage on each
+day of month. Note that the \code{date_of_year} column is faked in order to put all data entries in
+a leap year for comparisons.
 }
 \description{
-Create time series plot of data over multiple years
+Summarise and plot time series data over multiple years
 }

@@ -2,9 +2,12 @@
 % Please edit documentation in R/plot_region_time_series.R
 \name{plot_region_time_series}
 \alias{plot_region_time_series}
-\title{Create time series plot across regions for this year}
+\alias{summarise_region_time_series}
+\title{Summarise and plot time series data across all regions for this year}
 \usage{
 plot_region_time_series(.data, cause)
+
+summarise_region_time_series(.data)
 }
 \arguments{
 \item{.data}{A data frame containing the time series data.}
@@ -14,8 +17,11 @@ unless capitalisation is needed to denote an acronym of proper noun, since this 
 displayed as text in the middle of sentences where needed.}
 }
 \value{
-A \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} of the time series of this year for different regions.
+For \code{plot_region_time_series}, a \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} of the total usage in each region.
+
+From \code{summarise_region_time_series}, a data frame summarising the overall usage on each
+day of eeach region in the latest year.
 }
 \description{
-Create time series plot across regions for this year
+Summarise and plot time series data across all regions for this year
 }
