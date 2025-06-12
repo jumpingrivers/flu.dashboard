@@ -21,7 +21,7 @@ ui <- function(req) {
     ),
     shiny::tabPanel(
       title = "About",
-      shiny::h1("About")
+      about_page()
     )
   )
 }
