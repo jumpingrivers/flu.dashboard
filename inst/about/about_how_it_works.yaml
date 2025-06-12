@@ -1,0 +1,57 @@
+processing_stages:
+  1:
+    title: 🌐 Scraping original data from the web
+    body: |
+      We start with our "single source of truth": A *<abbr title="Urgent and Emergency Care">UEC</abbr> Daily <abbr title="Situation Report">SitRep</abbr>* file hosted on the NHS England page of
+      [Urgent and Emergency Care Daily Situation Reports](https://www.england.nhs.uk/statistics/statistical-work-areas/uec-sitrep/urgent-and-emergency-care-daily-situation-reports-2024-25/).
+      This comes as an Excel (.xlsx) format document where each dataset is on a separate sheet.
+
+      We use the {rvest} package to access each <abbr title="Urgent and Emergency Care">UEC</abbr> Daily Situation Reports page, then search for the correct hyperlink on the page.
+      The URL to the data file changes on a monthly basis, and the filename changes depending on the year, but there is one consistent element we can look for in the target URL that points to the correct file: The link to the `.xlsx` file always contains the string `UEC-Daily-SitRep`.
+  2:
+    title: 👀 Check for changes
+    body: |
+      We expect the historical data to not change, and it's possible that the current year's data has not been updated since we last performed the pipeline.
+      So once the file is downloaded, we compare the MD5 sum of the new data against the MD5 sum of the data we last used in a computation.
+      If they match, we know there was no change to the data, and we skip any further steps to reduce unnecessary workload on our server.
+  3:
+    title: 🕵️ QC the data
+    body: |
+      The data appears as a wide-format table in the spreadsheet, listed below several lines of metadata.
+      It's important to check the pre-processing script imported the correct rows and columns out of the sheet to create a valid table with the correct heading row.
+
+      We use [{pointblank}](https://rstudio.github.io/pointblank/) to check the format of the imported table.
+      If the table format changes unexpectedly, or data is not appearing in the formats we expect, {pointblank}'s agent will flag issues in the table and have the ability to terminate our data-preprocessing pipeline early, while still generating the report so we can see what issues it found in the data.
+
+      We can then perform all our data pre-processing---showing previews of how the data looks at various stages along the way---to get from the wide-format data from the spreadsheet, into the long-format data that is optimal for our application.
+
+      After the reformatting is complete, we use [{pointblank}](https://rstudio.github.io/pointblank/) again to check the final results are as expected.
+      For example, we can check that every location reports one, and only one, value for each day.
+      We could also ask {pointblank} to warn (not error) if it encounters an unusually large jump in values from one day to the next at a location.
+      By warning, we allow the pipeline to complete but with a flag for someone to manually review if this is a valid data point.
+  4:
+    title: 🔁 Repeat for each year
+    body: |
+      This step is fairly straightforward. With the routine working for one year, it becomes simple to map this routine to happen across multiple years using the [{purrr}](https://purrr.tidyverse.org/) package.
+      What's especially nice about using {purrr} is that we can take an embarrassingly parallel job---downloading and processing each year independently---and run it in parallel using [{furrr}](https://furrr.futureverse.org/).
+  5:
+    title: 💾 Store the data
+    body: |
+      The final stage of our Quarto document is to store the cleaned and verified results to our Posit Connect server using the [{pins}](https://pins.rstudio.com/) package.
+      The files are stored in [parquet format](https://www.jumpingrivers.com/blog/parquet-file-format-big-data-r/), since these are [compact and high-performance for reading into R](https://www.jumpingrivers.com/blog/arrow-rds-parquet-comparison/) and Python.
+  6:
+    title: 🤖 Automate the process
+    body: |
+      By containing all these steps in a [Quarto](https://quarto.org/) project and uploading the source .qmd file to Posit Connect, we can instruct Posit Connect to build the project on a regular schedule.
+      Since the spreadsheet containing raw data is only updated once a week and we don't require the update to happen immediately, we've set this processing pipeline to happen once a week, on a Thursday at 03:42 am GMT.
+      Why Thursday at stupid-o'clock?
+      Well that's when our server is likely to be quietest, with very few people browsing Shiny applications that the server also hosts.
+      By spreading out these non-critical jobs to where the server is quiet, we reduce the peak-capacity requirements on our server, reducing overall costs and making the most of existing infrastructure.
+
+      But if you need more frequent updates, you can set it to happen as often as you need.
+      Even repeating every minute of every day is an option!
+  7:
+    title: 📥 Check your emails
+    body: |
+      Once Posit Connect completes the pipeline, it automatically sends an email to the maintainers containing a link to the latest processing and quality report.
+      And if something starts to go wrong, Posit Connect provides a history of previous versions of the report, allowing you to go back in time to each publication date to see how and when things happened in the past.
