@@ -217,10 +217,10 @@
     },
     "commonmark": {
       "Package": "commonmark",
-      "Version": "1.9.2",
+      "Version": "1.9.5",
       "Source": "Repository",
       "Repository": "RSPM",
-      "Hash": "14eb0596f987c71535d07c3aff814742"
+      "Hash": "4ac08754c8ed35996b7c343fbb22885a"
     },
     "cpp11": {
       "Package": "cpp11",
@@ -791,6 +791,19 @@
       ],
       "Hash": "b8552d117e1b808b09a832f589b79035"
     },
+    "litedown": {
+      "Package": "litedown",
+      "Version": "0.7",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Requirements": [
+        "R",
+        "commonmark",
+        "utils",
+        "xfun"
+      ],
+      "Hash": "6145ea7089736f7b6585243bd3992508"
+    },
     "lubridate": {
       "Package": "lubridate",
       "Version": "1.9.4",
@@ -813,6 +826,19 @@
         "R"
       ],
       "Hash": "7ce2733a9826b3aeb1775d56fd305472"
+    },
+    "markdown": {
+      "Package": "markdown",
+      "Version": "2.0",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Requirements": [
+        "R",
+        "litedown",
+        "utils",
+        "xfun"
+      ],
+      "Hash": "b4349847250b103bbbb8bc6819c4fbca"
     },
     "memoise": {
       "Package": "memoise",
@@ -1226,14 +1252,14 @@
     },
     "rlang": {
       "Package": "rlang",
-      "Version": "1.1.5",
+      "Version": "1.1.6",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "R",
         "utils"
       ],
-      "Hash": "724dcc1490cd7071ee75ca2994a5446e"
+      "Hash": "892124978869b74935dc3934c42bfe5a"
     },
     "rmarkdown": {
       "Package": "rmarkdown",
@@ -1719,16 +1745,16 @@
     },
     "xfun": {
       "Package": "xfun",
-      "Version": "0.51",
+      "Version": "0.52",
       "Source": "Repository",
-      "Repository": "CRAN",
+      "Repository": "RSPM",
       "Requirements": [
         "R",
         "grDevices",
         "stats",
         "tools"
       ],
-      "Hash": "e1a3c06389a46d065c18bd4bbc27c64c"
+      "Hash": "652ce36fe7d57688e6786819b09d9190"
     },
     "xml2": {
       "Package": "xml2",

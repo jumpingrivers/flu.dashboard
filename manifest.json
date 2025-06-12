@@ -576,23 +576,23 @@
         "Package": "commonmark",
         "Type": "Package",
         "Title": "High Performance CommonMark and Github Markdown Rendering in R",
-        "Version": "1.9.2",
+        "Version": "1.9.5",
         "Authors@R": "c(\n    person(\"Jeroen\", \"Ooms\", ,\"jeroenooms@gmail.com\", role = c(\"aut\", \"cre\"),\n        comment = c(ORCID = \"0000-0002-4035-0289\")),\n    person(\"John MacFarlane\", role = \"cph\", comment = \"Author of cmark\"))",
         "Description": "The CommonMark specification <https://github.github.com/gfm/> defines\n    a rationalized version of markdown syntax. This package uses the 'cmark' \n    reference implementation for converting markdown text into various formats\n    including html, latex and groff man. In addition it exposes the markdown\n    parse tree in xml format. Also includes opt-in support for GFM extensions\n    including tables, autolinks, and strikethrough text.",
         "License": "BSD_2_clause + file LICENSE",
         "URL": "https://docs.ropensci.org/commonmark/\nhttps://ropensci.r-universe.dev/commonmark",
         "BugReports": "https://github.com/r-lib/commonmark/issues",
         "Suggests": "curl, testthat, xml2",
-        "RoxygenNote": "7.2.3",
+        "RoxygenNote": "7.3.2",
         "Language": "en-US",
         "Encoding": "UTF-8",
         "NeedsCompilation": "yes",
-        "Packaged": "2024-10-03 14:12:30 UTC; jeroen",
+        "Packaged": "2025-03-17 15:28:44 UTC; jeroen",
         "Author": "Jeroen Ooms [aut, cre] (<https://orcid.org/0000-0002-4035-0289>),\n  John MacFarlane [cph] (Author of cmark)",
         "Maintainer": "Jeroen Ooms <jeroenooms@gmail.com>",
         "Repository": "RSPM",
-        "Date/Publication": "2024-10-04 12:40:06 UTC",
-        "Built": "R 4.4.0; x86_64-pc-linux-gnu; 2024-10-05 04:12:17 UTC; unix"
+        "Date/Publication": "2025-03-17 16:30:02 UTC",
+        "Built": "R 4.4.0; x86_64-pc-linux-gnu; 2025-03-18 04:51:49 UTC; unix"
       }
     },
     "cpp11": {
@@ -2033,6 +2033,34 @@
         "RemoteSha": "1.0.4"
       }
     },
+    "litedown": {
+      "Source": "CRAN",
+      "Repository": "https://packagemanager.rstudio.com/cran/latest",
+      "description": {
+        "Package": "litedown",
+        "Type": "Package",
+        "Title": "A Lightweight Version of R Markdown",
+        "Version": "0.7",
+        "Authors@R": "c(\n    person(\"Yihui\", \"Xie\", role = c(\"aut\", \"cre\"), email = \"xie@yihui.name\", comment = c(ORCID = \"0000-0003-0645-5666\", URL = \"https://yihui.org\")),\n    person(\"Tim\", \"Taylor\", role = \"ctb\", comment = c(ORCID = \"0000-0002-8587-7113\")),\n    person()\n    )",
+        "Description": "Render R Markdown to Markdown (without using 'knitr'), and Markdown\n    to lightweight HTML or 'LaTeX' documents with the 'commonmark' package (instead\n    of 'Pandoc'). Some missing Markdown features in 'commonmark' are also\n    supported, such as raw HTML or 'LaTeX' blocks, 'LaTeX' math, superscripts,\n    subscripts, footnotes, element attributes, and appendices,\n    but not all 'Pandoc' Markdown features are (or will be) supported. With\n    additional JavaScript and CSS, you can also create HTML slides and articles.\n    This package can be viewed as a trimmed-down version of R Markdown and\n    'knitr'. It does not aim at rich Markdown features or a large variety of\n    output formats (the primary formats are HTML and 'LaTeX'). Book and website\n    projects of multiple input documents are also supported.",
+        "Depends": "R (>= 3.2.0)",
+        "Imports": "utils, commonmark (>= 1.9.5), xfun (>= 0.52)",
+        "Suggests": "rbibutils, rstudioapi, tinytex",
+        "License": "MIT + file LICENSE",
+        "URL": "https://github.com/yihui/litedown",
+        "BugReports": "https://github.com/yihui/litedown/issues",
+        "VignetteBuilder": "litedown",
+        "RoxygenNote": "7.3.2",
+        "Encoding": "UTF-8",
+        "NeedsCompilation": "no",
+        "Packaged": "2025-04-08 05:16:55 UTC; runner",
+        "Author": "Yihui Xie [aut, cre] (<https://orcid.org/0000-0003-0645-5666>,\n    https://yihui.org),\n  Tim Taylor [ctb] (<https://orcid.org/0000-0002-8587-7113>)",
+        "Maintainer": "Yihui Xie <xie@yihui.name>",
+        "Repository": "RSPM",
+        "Date/Publication": "2025-04-08 05:40:02 UTC",
+        "Built": "R 4.4.0; ; 2025-04-09 04:18:17 UTC; unix"
+      }
+    },
     "lubridate": {
       "Source": "CRAN",
       "Repository": "https://packagemanager.rstudio.com/cran/latest",
@@ -2108,6 +2136,33 @@
         "RemoteReposName": "CRAN",
         "RemotePkgPlatform": "source",
         "RemoteSha": "2.0.3"
+      }
+    },
+    "markdown": {
+      "Source": "CRAN",
+      "Repository": "https://packagemanager.rstudio.com/cran/latest",
+      "description": {
+        "Package": "markdown",
+        "Type": "Package",
+        "Title": "Render Markdown with 'commonmark'",
+        "Version": "2.0",
+        "Authors@R": "c(\n   person(\"Yihui\", \"Xie\", role = c(\"aut\", \"cre\"), email = \"xie@yihui.name\", comment = c(ORCID = \"0000-0003-0645-5666\")),\n   person(\"JJ\", \"Allaire\", role = \"aut\"),\n   person(\"Jeffrey\", \"Horner\", role = \"aut\"),\n   person(\"Henrik\", \"Bengtsson\", role = \"ctb\"),\n   person(\"Jim\", \"Hester\", role = \"ctb\"),\n   person(\"Yixuan\", \"Qiu\", role = \"ctb\"),\n   person(\"Kohske\", \"Takahashi\", role = \"ctb\"),\n   person(\"Adam\", \"November\", role = \"ctb\"),\n   person(\"Nacho\", \"Caballero\", role = \"ctb\"),\n   person(\"Jeroen\", \"Ooms\", role = \"ctb\"),\n   person(\"Thomas\", \"Leeper\", role = \"ctb\"),\n   person(\"Joe\", \"Cheng\", role = \"ctb\"),\n   person(\"Andrzej\", \"Oles\", role = \"ctb\"),\n   person(given = \"Posit Software, PBC\", role = c(\"cph\", \"fnd\"))\n   )",
+        "Description": "Render Markdown to full and lightweight HTML/LaTeX documents with\n    the 'commonmark' package. This package has been superseded by 'litedown'.",
+        "Depends": "R (>= 2.11.1)",
+        "Imports": "utils, xfun, litedown (>= 0.6)",
+        "Suggests": "knitr, rmarkdown (>= 2.18), yaml, RCurl",
+        "License": "MIT + file LICENSE",
+        "URL": "https://github.com/rstudio/markdown",
+        "BugReports": "https://github.com/rstudio/markdown/issues",
+        "RoxygenNote": "7.3.2",
+        "Encoding": "UTF-8",
+        "NeedsCompilation": "no",
+        "Packaged": "2025-03-23 17:06:26 UTC; runner",
+        "Author": "Yihui Xie [aut, cre] (<https://orcid.org/0000-0003-0645-5666>),\n  JJ Allaire [aut],\n  Jeffrey Horner [aut],\n  Henrik Bengtsson [ctb],\n  Jim Hester [ctb],\n  Yixuan Qiu [ctb],\n  Kohske Takahashi [ctb],\n  Adam November [ctb],\n  Nacho Caballero [ctb],\n  Jeroen Ooms [ctb],\n  Thomas Leeper [ctb],\n  Joe Cheng [ctb],\n  Andrzej Oles [ctb],\n  Posit Software, PBC [cph, fnd]",
+        "Maintainer": "Yihui Xie <xie@yihui.name>",
+        "Repository": "RSPM",
+        "Date/Publication": "2025-03-23 19:30:03 UTC",
+        "Built": "R 4.4.0; ; 2025-03-24 04:15:14 UTC; unix"
       }
     },
     "memoise": {
@@ -3069,37 +3124,38 @@
       "Repository": "https://packagemanager.rstudio.com/cran/latest",
       "description": {
         "Package": "rlang",
-        "Version": "1.1.5",
+        "Version": "1.1.6",
         "Title": "Functions for Base Types and Core R and 'Tidyverse' Features",
         "Description": "A toolbox for working with base types, core R features\n  like the condition system, and core 'Tidyverse' features like tidy\n  evaluation.",
-        "Authors@R": "c(\n    person(\"Lionel\", \"Henry\", ,\"lionel@posit.co\", c(\"aut\", \"cre\")),\n    person(\"Hadley\", \"Wickham\", ,\"hadley@posit.co\", \"aut\"),\n    person(given = \"mikefc\",\n           email = \"mikefc@coolbutuseless.com\", \n           role = \"cph\", \n           comment = \"Hash implementation based on Mike's xxhashlite\"),\n    person(given = \"Yann\",\n           family = \"Collet\",\n           role = \"cph\", \n           comment = \"Author of the embedded xxHash library\"),\n    person(given = \"Posit, PBC\", role = c(\"cph\", \"fnd\"))\n    )",
+        "Authors@R": "c(\n    person(\"Lionel\", \"Henry\", ,\"lionel@posit.co\", c(\"aut\", \"cre\")),\n    person(\"Hadley\", \"Wickham\", ,\"hadley@posit.co\", \"aut\"),\n    person(given = \"mikefc\",\n           email = \"mikefc@coolbutuseless.com\",\n           role = \"cph\",\n           comment = \"Hash implementation based on Mike's xxhashlite\"),\n    person(given = \"Yann\",\n           family = \"Collet\",\n           role = \"cph\",\n           comment = \"Author of the embedded xxHash library\"),\n    person(given = \"Posit, PBC\", role = c(\"cph\", \"fnd\"))\n    )",
         "License": "MIT + file LICENSE",
         "ByteCompile": "true",
         "Biarch": "true",
         "Depends": "R (>= 3.5.0)",
         "Imports": "utils",
-        "Suggests": "cli (>= 3.1.0), covr, crayon, fs, glue, knitr, magrittr,\nmethods, pillar, rmarkdown, stats, testthat (>= 3.0.0), tibble,\nusethis, vctrs (>= 0.2.3), withr",
+        "Suggests": "cli (>= 3.1.0), covr, crayon, desc, fs, glue, knitr,\nmagrittr, methods, pillar, pkgload, rmarkdown, stats, testthat\n(>= 3.2.0), tibble, usethis, vctrs (>= 0.2.3), withr",
         "Enhances": "winch",
         "Encoding": "UTF-8",
         "RoxygenNote": "7.3.2",
         "URL": "https://rlang.r-lib.org, https://github.com/r-lib/rlang",
         "BugReports": "https://github.com/r-lib/rlang/issues",
+        "Config/build/compilation-database": "true",
         "Config/testthat/edition": "3",
         "Config/Needs/website": "dplyr, tidyverse/tidytemplate",
         "NeedsCompilation": "yes",
-        "Packaged": "2025-01-17 08:43:17 UTC; lionel",
+        "Packaged": "2025-04-10 09:25:27 UTC; lionel",
         "Author": "Lionel Henry [aut, cre],\n  Hadley Wickham [aut],\n  mikefc [cph] (Hash implementation based on Mike's xxhashlite),\n  Yann Collet [cph] (Author of the embedded xxHash library),\n  Posit, PBC [cph, fnd]",
         "Maintainer": "Lionel Henry <lionel@posit.co>",
-        "Repository": "CRAN",
-        "Date/Publication": "2025-01-17 14:30:02 UTC",
-        "Built": "R 4.4.1; x86_64-pc-linux-gnu; 2025-01-27 04:23:58 UTC; unix",
+        "Repository": "RSPM",
+        "Date/Publication": "2025-04-11 08:40:10 UTC",
+        "Built": "R 4.4.0; x86_64-pc-linux-gnu; 2025-04-14 16:40:02 UTC; unix",
         "RemoteType": "standard",
         "RemotePkgRef": "rlang",
         "RemoteRef": "rlang",
-        "RemoteRepos": "https://cran.rstudio.com",
+        "RemoteRepos": "https://packagemanager.rstudio.com/cran/__linux__/jammy/latest",
         "RemoteReposName": "CRAN",
         "RemotePkgPlatform": "source",
-        "RemoteSha": "1.1.5"
+        "RemoteSha": "1.1.6"
       }
     },
     "rmarkdown": {
@@ -4174,12 +4230,12 @@
         "Package": "xfun",
         "Type": "Package",
         "Title": "Supporting Functions for Packages Maintained by 'Yihui Xie'",
-        "Version": "0.51",
+        "Version": "0.52",
         "Authors@R": "c(\n  person(\"Yihui\", \"Xie\", role = c(\"aut\", \"cre\", \"cph\"), email = \"xie@yihui.name\", comment = c(ORCID = \"0000-0003-0645-5666\", URL = \"https://yihui.org\")),\n  person(\"Wush\", \"Wu\", role = \"ctb\"),\n  person(\"Daijiang\", \"Li\", role = \"ctb\"),\n  person(\"Xianying\", \"Tan\", role = \"ctb\"),\n  person(\"Salim\", \"Brüggemann\", role = \"ctb\", email = \"salim-b@pm.me\", comment = c(ORCID = \"0000-0002-5329-5987\")),\n  person(\"Christophe\", \"Dervieux\", role = \"ctb\"),\n  person()\n  )",
         "Description": "Miscellaneous functions commonly used in other packages maintained by 'Yihui Xie'.",
         "Depends": "R (>= 3.2.0)",
         "Imports": "grDevices, stats, tools",
-        "Suggests": "testit, parallel, codetools, methods, rstudioapi, tinytex (>=\n0.30), mime, litedown (>= 0.4), commonmark, knitr (>= 1.47),\nremotes, pak, rhub, renv, curl, xml2, jsonlite, magick, yaml,\nqs, rmarkdown",
+        "Suggests": "testit, parallel, codetools, methods, rstudioapi, tinytex (>=\n0.30), mime, litedown (>= 0.4), commonmark, knitr (>= 1.50),\nremotes, pak, curl, xml2, jsonlite, magick, yaml, qs",
         "License": "MIT + file LICENSE",
         "URL": "https://github.com/yihui/xfun",
         "BugReports": "https://github.com/yihui/xfun/issues",
@@ -4187,19 +4243,12 @@
         "RoxygenNote": "7.3.2",
         "VignetteBuilder": "litedown",
         "NeedsCompilation": "yes",
-        "Packaged": "2025-02-19 15:23:21 UTC; runner",
+        "Packaged": "2025-04-02 19:53:53 UTC; runner",
         "Author": "Yihui Xie [aut, cre, cph] (<https://orcid.org/0000-0003-0645-5666>,\n    https://yihui.org),\n  Wush Wu [ctb],\n  Daijiang Li [ctb],\n  Xianying Tan [ctb],\n  Salim Brüggemann [ctb] (<https://orcid.org/0000-0002-5329-5987>),\n  Christophe Dervieux [ctb]",
         "Maintainer": "Yihui Xie <xie@yihui.name>",
         "Repository": "RSPM",
-        "Date/Publication": "2025-02-19 16:00:02 UTC",
-        "Built": "R 4.4.0; x86_64-pc-linux-gnu; 2025-02-20 04:35:17 UTC; unix",
-        "RemoteType": "standard",
-        "RemotePkgRef": "xfun",
-        "RemoteRef": "xfun",
-        "RemoteRepos": "https://packagemanager.rstudio.com/cran/__linux__/jammy/latest",
-        "RemoteReposName": "CRAN",
-        "RemotePkgPlatform": "source",
-        "RemoteSha": "0.51"
+        "Date/Publication": "2025-04-02 20:40:02 UTC",
+        "Built": "R 4.4.0; x86_64-pc-linux-gnu; 2025-04-03 04:26:12 UTC; unix"
       }
     },
     "xml2": {
@@ -4383,13 +4432,22 @@
       "checksum": "8391f73315c02f22d79c64b9c7c9595e"
     },
     ".Rprofile": {
-      "checksum": "6d805cb291abe3c21754b9bcc0b04696"
+      "checksum": "5e6fb8ef0c6ecf741f943fe74bc65b17"
     },
     "app.R": {
       "checksum": "f3f36cce398a9cf8f3d620291ee5324f"
     },
     "DESCRIPTION": {
-      "checksum": "987bffe5984d2976f83609dd275d6f94"
+      "checksum": "6e66753b69d8705b5ffb540a6385cb27"
+    },
+    "inst/about/about_how_it_works.md": {
+      "checksum": "d9f9cd1ccc141908c37a921194f53f2a"
+    },
+    "inst/about/about_how_it_works.yaml": {
+      "checksum": "5879589b0dcf7fe4fd28b878708813cc"
+    },
+    "inst/about/about_main.md": {
+      "checksum": "f9c337e0816fac63014f50c17379b245"
     },
     "inst/brand/_brand.yml": {
       "checksum": "c2875c9a7dfb1daf1c720e4571091c90"
@@ -4455,7 +4513,13 @@
       "checksum": "957d4370a8ea2ce4ab86bd7c42fd3967"
     },
     "NAMESPACE": {
-      "checksum": "13f4a61ab349c298d22dc87ee3485aba"
+      "checksum": "54bac31f81d5cddf7426d1ae67483f2a"
+    },
+    "NEWS.md": {
+      "checksum": "f1c9ea9b983344c4a474d3738ead95a9"
+    },
+    "R/about_page.R": {
+      "checksum": "f165a84d1490948976872e7b48fae686"
     },
     "R/change_over_time.R": {
       "checksum": "4890ada7033faa4279f93520885953aa"
@@ -4512,7 +4576,7 @@
       "checksum": "e29480c7d2c61568a72712b912ee3df1"
     },
     "R/ui.R": {
-      "checksum": "3fbfe77cc335fa93aa9d473074c1688f"
+      "checksum": "034dc985a722bb578b493b8bcc3c62b4"
     },
     "R/zzz.R": {
       "checksum": "41f784d2c11136c40f92f9ec365ae7c6"
@@ -4521,7 +4585,7 @@
       "checksum": "5e455429e6bd0f737139ea8b3e871b32"
     },
     "renv.lock": {
-      "checksum": "b79a5a4229a0809e09149761673899c0"
+      "checksum": "54a86c1a08dca7e20625293f1fa2168a"
     },
     "tests/testthat.R": {
       "checksum": "377b17040d339b1cb7f99027f879ede7"
