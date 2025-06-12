@@ -2,5 +2,6 @@
 
 export(get_year_end)
 export(run)
+importFrom(markdown,mark)
 importFrom(rlang,.data)
 importFrom(rlang,.env)
