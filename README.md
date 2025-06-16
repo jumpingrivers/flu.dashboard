@@ -1,93 +1,81 @@
 # Flu Dashboard
 
+The {flu.dashboard} R package contains:
 
+- A Shiny application for viewing the information provided in the application.
 
-## Getting started
+For information about the content and purpose of the application, read the file at [_inst/about/about_main.md_](inst/about/about_main.md).
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+A version of this app is deployed to [gallery-flu.jmpr.io](https://gallery-flu.jmpr.io/).
+You can also view some of the other apps, dashboards and widgets from Jumping Rivers in our [gallery](https://www.jumpingrivers.com/data-science/gallery/).
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+## Environment variables
 
-## Add your files
+The app stores data using pins.
+The current pin location used in the code is for a Posit Connect server.
+If this is where your pins will be stored, you'll need to [create an API key](https://docs.posit.co/connect/user/api-keys/#api-keys-creating), or know what your existing one is.
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+Then you'll need to add these details to an _.Renviron_ file, which contains the following details:
 
 ```
-cd existing_repo
-git remote add origin https://gitlab.com/jumpingrivers/ds/connect-deployments/nhs-flu/flu-dashboard.git
-git branch -M main
-git push -uf origin main
+CONNECT_SERVER=https://your.connect.server
+CONNECT_API_KEY=AbCdE123456f
 ```
 
-## Integrate with your tools
+Replacing the placeholders with the value for your server address and API key.
 
-- [ ] [Set up project integrations](https://gitlab.com/jumpingrivers/ds/connect-deployments/nhs-flu/flu-dashboard/-/settings/integrations)
+## For application users
 
-## Collaborate with your team
+To install the application, use:
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+```r
+remotes::install_github("jumpingrivers/flu.dashboard")
+```
 
-## Test and Deploy
+With any necessary [environment variables](#environment-variables) set to connect to the data sources through {pins}, you can start the Shiny application using:
 
-Use the built-in continuous integration in GitLab.
+```r
+flu.dashboard::run()
+```
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+## For application developers
 
-***
+### Restoring {renv}
 
-# Editing this README
+If you are forking the repository to develop, note this uses {renv} to manage R package dependencies.
+To install the R packages from the {renv} lockfile, run `renv::restore()` or read [documentation from the {renv} website](https://rstudio.github.io/renv/#workflow).
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+### Running the application
 
-## Suggestions for a good README
+From the root directory of the repository, you can start the application in the normal way for a Shiny application.
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+```r
+shiny::runApp()
+```
 
-## Name
-Choose a self-explaining name for your project.
+### Deploying the application
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+1. If you have introduced or updated packages for the application, update the {renv} lockfile
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+    ```r
+    renv::snapshot(dev = TRUE)
+    ```
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+1. If performing a git-backed deployment from Posit Connect, update the _manifest.json_ file:
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+    ```r
+    rsconnect::write_manifest()
+    ```
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+1. Deploy to your hosting service from the *app.R* file at the root of the repository, or allow Posit Connect's git-backed deployment to perform the deployment and automatically check for updates to the manifest.json file by pushing changes to the git repository.
 
 ## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+
+This has been created by the Data Science team at Jumping Rivers.
+You can get in touch with us at [hello@jumpingrivers.com](mailto:hello@jumpingrivers.com).
+
+We'd like to thank Andy McCann and the DS Team within NUCT at NHS ML who created the original inspiration inspiration for this app with their ['flu-tracker Shiny application](https://nhsml-nuct.shinyapps.io/NationalFlu/) ([source code](https://github.com/MLCSU/NationalFlu)).
 
 ## License
-For open source projects, say how it is licensed.
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+This R package has a [GNU GPL v3 license](LICENSE.md).
