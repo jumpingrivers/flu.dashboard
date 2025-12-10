@@ -1,3 +1,7 @@
+# flu.dashboard 0.1.2
+
+* Update renv.lock file to new package versions.
+
 # flu.dashboard 0.1.1
 
 * Resolve issues with package lints.
