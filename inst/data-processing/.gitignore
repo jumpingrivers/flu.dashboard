@@ -1,0 +1,12 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+.Renviron
+
+/.quarto/
+/rsconnect/
+
+/data-preprocessing_files/
+*.html
+*.xlsx
