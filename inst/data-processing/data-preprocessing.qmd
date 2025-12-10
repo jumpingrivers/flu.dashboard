@@ -1,0 +1,604 @@
+---
+title: "Data Preprocessing report"
+subtitle: "NHS Flu dashboard"
+author:
+  - name: Keith Newman
+    email: keith@jumpingrivers.com
+    affiliations:
+      - name: Jumping Rivers
+        id: JR
+        number: + 44 191 432 4340
+        address: The Catalyst, Newcastle Helix
+        city: Newcastle upon Tyne
+        region: Tyne and Wear
+        country: United Kingdom
+        postal-code: NE4 5TG
+        url: https://www.jumpingrivers.com
+---
+
+```{r}
+#| label: pointblank-setup
+#| include: false
+#| echo: false
+knitr::opts_chunk$set(echo = TRUE)
+
+library(pointblank)
+library(readxl)
+library(cli)
+library(dplyr)
+library(tidyr)
+library(tibble)
+library(janitor)
+library(lubridate)
+library(pins)
+library(purrr)
+library(rvest)
+library(nanoparquet)
+
+# Using `validate_rmd()` here to enable validation mode for R Markdown
+# documents; options for the can be set here, as well
+validate_rmd(summary = TRUE)
+```
+
+## Download data
+
+Data can be found on 
+
+```{r}
+#| label: set-download-options
+#| echo: false
+sitrep_sources_metadata <- "keith/nhs_sitrep_metadata"
+
+check_old_md5 <- TRUE
+force_old_recompute <- FALSE
+first_year_end <- 2022L
+
+year_end <- year(today())
+current_month <- month(today())
+year_end <- ifelse(current_month < 11, year_end, year_end + 1L)
+
+get_download_url <- function(year_end) {
+  rvest::read_html(
+    sprintf(
+      "https://www.england.nhs.uk/statistics/statistical-work-areas/uec-sitrep/urgent-and-emergency-care-daily-situation-reports-%d-%d/",
+      year_end - 1L,
+      year_end - 2000L
+    )
+  ) |>
+    rvest::html_elements("a") |>
+    rvest::html_attrs() |>
+    purrr::keep(~ stringr::str_detect(.x["href"], "UEC-Daily-SitRep.*\\.xlsx$")) |>
+    purrr::list_c()
+}
+
+site_url <- sprintf(
+  "https://www.england.nhs.uk/statistics/statistical-work-areas/uec-sitrep/urgent-and-emergency-care-daily-situation-reports-%d-%d/",
+  year_end - 1L,
+  year_end - 2000L
+)
+```
+
+Data for the current year can be obtained from the [UEC SitRep page](`r site_url`).
+Data for previous years can be accessed from the navigation on this page.
+
+The files containing the data are under a link usually titled "UEC Daily SitRep" and is available as an Excel XLSX format.
+
+This processing script has been configured to run from the `r first_year_end - 1`-`r first_year_end` year onwards.
+For previous years of data, the script will `r if (!check_old_md5) "not"` check for changes to the old dataset and will `r if (!force_old_recompute) "not"` force old datasets to be re-computed.
+
+```{r}
+#| label: perform-download
+#| echo: True
+
+# Find construct table of new URLs
+board <- board_connect(auth = "envvar")
+if (pin_exists(board, sitrep_sources_metadata)) {
+  sources_metadata <- pin_read(board, sitrep_sources_metadata) |>
+  dplyr::mutate(new_url = dplyr::if_else(.data$year == year_end,
+                                         get_download_url(.data$year), .data$old_url),
+                to_download = (.data$year == year_end),
+                .by = "year")
+} else {
+  cli::cli_inform(c("i" = "Downloading all years of data."))
+  sources_metadata <- tibble::tibble(
+    year = seq(first_year_end, year_end)
+  ) |>
+    dplyr::mutate(
+      old_url = NA_character_,
+      old_md5 = NA_character_,
+      new_url = purrr::map_chr(.data$year, get_download_url),
+      to_download = TRUE
+    )
+}
+
+# User can decide to force previous years to be re-evaluated.
+if (check_old_md5 || force_old_recompute) {
+  sources_metadata <- dplyr::mutate(
+    sources_metadata,
+    to_download = TRUE,
+    new_url = get_download_url(.data$year),
+    .by = "year"
+  )
+}
+
+# Download the files and take an MD5 sum.
+new_metadata <- dplyr::mutate(
+  sources_metadata,
+  temp_dest = dplyr::if_else(.data$to_download, tempfile(paste0("sitrep-", .data$year), fileext = ".xlsx"), NA_character_),
+  download = dplyr::if_else(.data$to_download, download.file(url = .data$new_url, destfile = .data$temp_dest), NA_integer_),
+  new_md5 = dplyr::if_else(.data$to_download, tools::md5sum(.data$temp_dest), NA_character_),
+  to_evaluate = (tidyr::replace_na(.data$download, -1L) == 0L) &&
+    (tidyr::replace_na(.data$new_md5, "") != tidyr::replace_na(.data$old_md5, "")),
+  .by = "year"
+)
+
+# Warn if a file didn't download correctly.
+if (any(new_metadata$to_download & new_metadata$download != 0L)) {
+  failures <- dplyr::filter(new_metadata, .data$download != 0L) |> pull("new_url")
+  cli::cli_alert_danger("{length(failures)} Sitrep file{?s} failed to download: {failures}.")
+  knitr::knit_exit()
+}
+
+# Force all downloaded files to be evaluated.
+if (force_old_recompute) {
+  new_metadata$to_evaluate[new_metadata$download == 0L] <- TRUE
+}
+
+```
+
+## Read data from XLSX file
+
+### Bed usage
+
+We can read the data on bed usage due to laboratory confirmed flu cases:
+
+```{r}
+#| label: read-excel-file
+#| message: false
+imported_data <- new_metadata |>
+  dplyr::filter(.data$to_evaluate) |>
+  dplyr::mutate(
+    raw_import = purrr::map(
+      .data$temp_dest,
+      ~ read_excel(path = .x, sheet = "Flu", skip = 14, na = c("", "-")) |>
+        select(where(~sum(!is.na(.x)) > 0)) |>
+        drop_na("Code"))
+  )
+```
+
+::: {.panel-tabset}
+
+```{r}
+#| label: display-imported-raw-files
+#| results: asis
+#| echo: false
+#| pages.print: False
+
+purrr::walk2(
+  imported_data$year, imported_data$raw_import,
+  ~ {
+    cat("#### ", .x, "\n\n")
+    cat("```\n")
+    print(.y)
+    cat("\n```\n")
+    cat("\n\n")
+  }
+)
+```
+
+:::
+
+::::{.callout-note collapse=true}
+#### Information about raw data table
+
+```{r}
+#| label: map-informant
+#| echo: false
+imported_data <- imported_data |>
+  dplyr::mutate(
+    pb_agent = purrr::map(
+      .data$raw_import,
+      ~ create_agent(tbl = .x,
+                     tbl_name = "Imported Flu data",
+                     label = "Raw and unchecked data")
+    ),
+    agent_info = purrr::map(
+      .data$pb_agent,
+      ~ create_informant(agent = .x) |>
+          info_columns(
+            columns = "NHS England Region",
+            `Regions` = "Contains {n_regions} regions in England, including: {region_list}"
+          ) |>
+          info_columns(
+            columns = "Code",
+            `Code` = "Short code for each Trust. Examples include: {code_list}",
+          ) |>
+          info_columns(
+            columns = "Name",
+            `Name` = "Trust names. Examples include: {trust_list}"
+          ) |>
+          info_columns(
+            columns = contains("flu beds"),
+            `DESCRIPTION` = "Number of flu beds taken by confirmed flu cases."
+          ) |>
+          info_snippet("n_regions", ~ . %>% dplyr::pull("NHS England Region") %>% unique() %>% length()) |>
+          info_snippet("region_list", snip_list("NHS England Region", limit = 6)) |>
+          info_snippet("code_list", snip_list("Code", limit = 10)) |>
+          info_snippet("trust_list", snip_list("Name", limit = 5)) |>
+          incorporate() |>
+          get_informant_report()
+    )
+  )
+```
+
+::: {.panel-tabset}
+
+```{r}
+#| label: display-info-agent-tabs
+#| results: asis
+#| echo: false
+
+purrr::walk2(
+  imported_data$year, imported_data$agent_info,
+  ~ {
+    cat("##### ", .x, "\n\n")
+    print(.y)
+    cat("\n\n")
+  }
+)
+```
+
+:::
+
+::::
+
+Checking data schema and basic data quality:
+
+```{r}
+#| label: check-data-types
+#| echo: false
+#| validate: true
+imported_data <- imported_data |>
+  dplyr::mutate(
+    data_type_check = purrr::map(
+      .data$pb_agent,
+      ~ .x |>
+          col_is_character(c("NHS England Region", "Code", "Name")) |>
+          col_is_numeric(contains("flu beds")) |>
+          rows_distinct(c("Code", "Name"), preconditions = ~ . %>% tidyr::drop_na()) |>
+          col_vals_gte(contains("flu beds"), value = 0, na_pass = TRUE) |>
+          interrogate()
+    )
+  )
+```
+
+::::{.callout-note collapse=true}
+#### Checks on raw data format
+
+Only failing checks are shown:
+
+::: {.panel-tabset}
+
+```{r}
+#| label: check-data-types-report
+#| results: asis
+#| echo: false
+
+purrr::walk2(
+  imported_data$year, imported_data$data_type_check,
+  ~ {
+    cat("##### ", .x, "\n\n")
+    print(get_agent_report(.y, keep = "fail_states"))
+    cat("\n\n")
+  }
+)
+```
+
+:::
+
+::::
+
+## Dates
+
+We can read the dates covered by the columns of data, and find the range of dates covered.
+Dates appear in the first of each cell and then a `NA` cell appears afterwards.
+The most recent date will be missing an `NA` cell afterwards as it won't be parsed;
+we need to manually add in a second copy for this last date.
+
+```{r}
+#| label: read-dates
+#| message: false
+imported_data <- imported_data |>
+  dplyr::mutate(
+    data_dates = purrr::map(
+      .data$temp_dest,
+      ~ read_excel(
+          path = .x,
+          sheet = "Flu",
+          col_names = FALSE,
+          col_type = "date",
+          skip = 13,
+          n_max = 1
+        ) |>
+          pivot_longer(cols = everything(), names_to = "column_index", values_to = "date") |>
+          add_row(date = NA) |>
+          mutate(date = as.Date(date), .keep = "none") |>
+          fill("date", .direction = "down")
+    )
+  )
+
+# Delete the temporary files when script exits.
+on.exit(unlink(new_metadata$temp_dest[new_metadata$to_download]))
+
+```
+
+::: {.panel-tabset}
+
+```{r}
+#| label: dataset-dates-informant
+#| results: asis
+#| echo: false
+
+agent_report <- purrr::map(
+  imported_data$data_dates,
+  ~ create_informant(.x) |>
+      info_columns(columns = "date",
+                   `Date range` = "Dates range from {earliest_date} to {latest_date}.") |>
+      info_snippet("earliest_date", snip_lowest("date")) |>
+      info_snippet("latest_date", snip_highest("date")) |>
+      incorporate() |>
+      get_informant_report()
+)
+
+purrr::walk2(
+  imported_data$year, agent_report,
+  ~ {
+    cat("### ", .x, "\n\n")
+    print(.y)
+    cat("\n\n")
+  }
+)
+
+```
+
+:::
+
+Check that the number of columns of flu data matches the number of dates extracted from the
+spreadsheet.
+
+::: {.panel-tabset}
+
+Only failing checks are shown:
+
+```{r}
+#| label: check-columns-match-dates
+#| results: asis
+#| echo: false
+#| validate: false
+
+agent_report <- purrr::map(
+  imported_data$data_dates,
+  ~ .x |>
+      select(contains("flu beds")) |>
+      create_agent() |>
+      col_count_match(
+        count = nrow(.x),
+        label = "Correct number of flu count columns",
+        brief = "Number of columns of flu bed data matches number of dates read from file."
+      ) |>
+      interrogate() |>
+      get_agent_report(keep = "fail_states")
+)
+
+purrr::walk2(
+  imported_data$year, agent_report,
+  ~ {
+    cat("### ", .x, "\n\n")
+    print(.y)
+    cat("\n\n")
+  }
+)
+```
+
+:::
+
+## Restructure data
+
+Table will be pivoted into long format and dates will be joined to the appropriate values.
+
+```{r}
+#| label: pivot-data-longer
+imported_data <- imported_data |>
+  dplyr::mutate(
+    data_reformat = purrr::map2(
+      .data$raw_import, .data$data_dates,
+      ~ .x |>
+        mutate(across(c("NHS England Region", "Code", "Name"), factor)) |> 
+        pivot_longer(cols = contains("flu beds"),
+                     names_to = "Type",
+                     values_to = "Occupancy",
+                     values_ptypes = integer()) |>
+        clean_names(abbreviations = c("NHS")) |>
+        separate_wider_delim(cols = "type", delim = "...", names = c("type", "column_index")) |>
+        separate_wider_delim(cols = "type", delim = " ", names = "bed_type", too_many = "drop") |>
+        mutate(column_index = as.numeric(column_index),
+               bed_type = factor(bed_type),
+               occupancy = replace_na(occupancy, replace = 0L)) |>
+        group_by(code) |>
+        arrange(column_index, .by_group = TRUE) |>
+        mutate(date = .y$date, .before = "bed_type") |>
+        ungroup() |>
+        select(-"column_index")
+    )
+  )
+```
+
+::: {.panel-tabset}
+
+```{r}
+#| label: reformatted-data-preview
+#| results: asis
+#| echo: false
+#| pages.print: False
+
+purrr::walk2(
+  imported_data$year, imported_data$data_reformat,
+  ~ {
+    cat("### ", .x, "\n\n")
+    cat("```\n")
+    print(.y)
+    cat("\n```\n")
+    cat("\n\n")
+  }
+)
+```
+
+:::
+
+### Assess reformatted data
+
+Data quality check will be performed to ensure each site in the converted data has exactly one
+date entry for each bed type. Additional checks ensure no missing count data or incorrect data
+types.
+
+```{r}
+#| label: assess-pivoted-data
+#| echo: false
+#| validate: true
+imported_data <- imported_data |>
+  dplyr::mutate(
+    reformat_agent = purrr::map2(
+      .data$data_reformat, .data$data_dates,
+      ~ create_agent(
+          tbl = .x,
+          tbl_name = "Imported Flu data",
+          label = "Flu count data in long data format."
+        ) |>
+          col_is_factor(columns = vars("nhs_england_region", "code", "name", "bed_type")) |>
+          col_is_date(columns = "date") |>
+          col_is_integer(columns = "occupancy") |>
+          col_vals_gte(column = "occupancy", value = 0, na_pass = FALSE) |>
+          col_vals_make_set(
+            columns = "date",
+            set = .y$date,
+            preconditions = . %>% dplyr::filter(bed_type == "CC"),
+            segments = vars(code),
+            label = "Trust {.seg_val} has CC data available on every date",
+            brief = "For each Trust, every date value appears at least once for the CC bed type."
+          ) |>
+          col_vals_make_set(
+            columns = "date",
+            set = .y$date,
+            preconditions = . %>% dplyr::filter(bed_type == "G&A"),
+            segments = vars(code),
+            label = "Trust {.seg_val} has G&A data available on every date",
+            brief = "For each trust, every date value appears at least once for the G&A bed type."
+          ) |>
+          rows_distinct(
+            columns = "date",
+            preconditions = . %>% dplyr::filter(bed_type == "CC"),
+            segments = vars(code),
+            label = "Trust {.seg_val} has no duplicate dates for CC beds.",
+            brief = "For each trust, every date value does not appear more than once for the CC bed type."
+          ) |>
+          rows_distinct(
+            columns = "date",
+            preconditions = . %>% dplyr::filter(bed_type == "G&A"),
+            segments = vars(code),
+            label = "Trust {.seg_val} has no duplicate dates for G&A beds.",
+            brief = "For each trust, every date value does not appear more than once for the G&A bed type."
+          ) |>
+          interrogate()
+    )
+  )
+```
+
+::::{.callout-note collapse=true}
+
+#### Checks on whether reformatted data matches expected format
+
+Only failing checks are shown:
+
+::: {.panel-tabset}
+
+```{r}
+#| label: assess-pivoted-data-report
+#| results: asis
+#| echo: false
+
+purrr::walk2(
+  imported_data$year, imported_data$reformat_agent,
+  ~ {
+    cat("##### ", .x, "\n\n")
+    print(get_agent_report(.y, keep = "fail_states"))
+    cat("\n\n")
+  }
+)
+```
+
+:::
+
+::::
+
+## Data export
+
+Exporting full dataset
+
+```{r}
+#| label: store-full-data-as-pin
+#| echo: false
+all_uploaded <- purrr::pmap(
+  imported_data |>
+    dplyr::select("year", "data_reformat", "reformat_agent", "data_type_check"),
+  function(year, data_reformat, reformat_agent, data_type_check) {
+    full_data_upload <- FALSE
+    if (all_passed(reformat_agent) && all_passed(data_type_check)) {
+      tryCatch(
+        {
+          board <- board_connect(auth = "envvar")
+          pin_name <- pin_write(
+            board = board,
+            x = data_reformat,
+            name = sprintf("keith/nhs_flu_%d_full", year),
+            type = "parquet",
+            title = paste("NHS flu", year),
+            description = paste("Full", year, "data of NHS England bed occupancy where the patient",
+                                "has a laboratory confirmed case of Influenza.")
+          )
+          cli::cli_alert_success("Data is available at {pin_name}")
+          full_data_upload <- TRUE
+        },
+        error = function(e) {
+          cli::cli_alert_danger(paste("Data export failed:", e))
+        }
+      )
+    } else {
+      cli::cli_alert_danger("Data was not exported because the data quality checks did not fully pass.")
+    }
+  }
+)
+
+```
+
+```{r}
+#| label: validate-full-data-upload
+#| echo: false
+#| validate: true
+stop_if_not(all(unlist(all_uploaded)))
+final_metadata <- new_metadata |>
+  dplyr::mutate(new_url = dplyr::coalesce(.data$new_url, .data$old_url),
+                new_md5 = dplyr::coalesce(.data$new_md5, .data$old_md5)) |>
+  dplyr::select("year", starts_with("new_")) |>
+  dplyr::rename(old_url = "new_url", old_md5 = "new_md5")
+board <- board_connect(auth = "envvar")
+pin_name <- pin_write(
+  board = board,
+  x = final_metadata,
+  name = "keith/nhs_flu_sources_metadata",
+  type = "parquet",
+  title = "NHS Flu Data Sources",
+  description = "Metadata containing the "
+)
+```
+
+**[End of report]**
