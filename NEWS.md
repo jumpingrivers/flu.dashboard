@@ -1,6 +1,7 @@
 # flu.dashboard 0.1.2
 
 * Update renv.lock file to new package versions.
+* Add R-CMD-check GitHub Action
 
 # flu.dashboard 0.1.1
 
