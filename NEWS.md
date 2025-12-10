@@ -1,3 +1,7 @@
+# flu.dashboard 0.1.3
+
+* Change `%>%` for `|>` to satisfy lintr
+
 # flu.dashboard 0.1.2
 
 * Update renv.lock file to new package versions.
