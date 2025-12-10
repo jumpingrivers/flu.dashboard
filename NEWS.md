@@ -1,3 +1,8 @@
+# flu.dashboard 0.1.1
+
+* Resolve issues with package lints.
+* Add GitHub Action to perform {lintr} checks.
+
 # flu.dashboard 0.1.0
 
 * Add data-preprocessing scripts to the inst/ directory.

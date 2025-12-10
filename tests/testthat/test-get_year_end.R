@@ -11,7 +11,7 @@ test_that("get_year_end() returns the correct year end", {
   )
 
   # individual dates
-  for (i in seq(nrow(dates))) {
+  for (i in seq_len(nrow(dates))) {
     expect_identical(!!get_year_end(dates$date[i]), !!dates$target[i])
   }
 

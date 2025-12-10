@@ -1,5 +1,5 @@
 trust_single_region_ui <- function(id, region, trusts) {
-  ns = shiny::NS(id)
+  ns <- shiny::NS(id)
   bslib::accordion_panel(
     title = region,
     shiny::p(
@@ -46,6 +46,6 @@ trust_single_region_server <- function(all_trust_codes, id) {
       selected(input$trusts)
     })
 
-    return(selected)
+    selected
   })
 }

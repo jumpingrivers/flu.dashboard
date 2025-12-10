@@ -60,7 +60,7 @@ year_end <- ifelse(current_month < 11, year_end, year_end + 1L)
 get_download_url <- function(year_end) {
   rvest::read_html(
     sprintf(
-      "https://www.england.nhs.uk/statistics/statistical-work-areas/uec-sitrep/urgent-and-emergency-care-daily-situation-reports-%d-%d/",
+      "https://www.england.nhs.uk/statistics/statistical-work-areas/uec-sitrep/urgent-and-emergency-care-daily-situation-reports-%d-%d/", #nolint: line_length_linter
       year_end - 1L,
       year_end - 2000L
     )
@@ -72,7 +72,7 @@ get_download_url <- function(year_end) {
 }
 
 site_url <- sprintf(
-  "https://www.england.nhs.uk/statistics/statistical-work-areas/uec-sitrep/urgent-and-emergency-care-daily-situation-reports-%d-%d/",
+  "https://www.england.nhs.uk/statistics/statistical-work-areas/uec-sitrep/urgent-and-emergency-care-daily-situation-reports-%d-%d/",  #nolint: line_length_linter
   year_end - 1L,
   year_end - 2000L
 )
@@ -94,10 +94,10 @@ For previous years of data, the script will `r if (!check_old_md5) "not"` check 
 board <- board_connect(auth = "envvar")
 if (pin_exists(board, sitrep_sources_metadata)) {
   sources_metadata <- pin_read(board, sitrep_sources_metadata) |>
-  dplyr::mutate(new_url = dplyr::if_else(.data$year == year_end,
-                                         get_download_url(.data$year), .data$old_url),
-                to_download = (.data$year == year_end),
-                .by = "year")
+    dplyr::mutate(new_url = dplyr::if_else(.data$year == year_end,
+                                           get_download_url(.data$year), .data$old_url),
+                  to_download = (.data$year == year_end),
+                  .by = "year")
 } else {
   cli::cli_inform(c("i" = "Downloading all years of data."))
   sources_metadata <- tibble::tibble(
@@ -124,9 +124,21 @@ if (check_old_md5 || force_old_recompute) {
 # Download the files and take an MD5 sum.
 new_metadata <- dplyr::mutate(
   sources_metadata,
-  temp_dest = dplyr::if_else(.data$to_download, tempfile(paste0("sitrep-", .data$year), fileext = ".xlsx"), NA_character_),
-  download = dplyr::if_else(.data$to_download, download.file(url = .data$new_url, destfile = .data$temp_dest), NA_integer_),
-  new_md5 = dplyr::if_else(.data$to_download, tools::md5sum(.data$temp_dest), NA_character_),
+  temp_dest = dplyr::if_else(
+    .data$to_download,
+    tempfile(paste0("sitrep-", .data$year), fileext = ".xlsx"),
+    NA_character_
+  ),
+  download = dplyr::if_else(
+    .data$to_download,
+    download.file(url = .data$new_url, destfile = .data$temp_dest),
+    NA_integer_
+  ),
+  new_md5 = dplyr::if_else(
+    .data$to_download,
+    tools::md5sum(.data$temp_dest),
+    NA_character_
+  ),
   to_evaluate = (tidyr::replace_na(.data$download, -1L) == 0L) &&
     (tidyr::replace_na(.data$new_md5, "") != tidyr::replace_na(.data$old_md5, "")),
   .by = "year"
@@ -162,7 +174,8 @@ imported_data <- new_metadata |>
       .data$temp_dest,
       ~ read_excel(path = .x, sheet = "Flu", skip = 14, na = c("", "-")) |>
         select(where(~sum(!is.na(.x)) > 0)) |>
-        drop_na("Code"))
+        drop_na("Code")
+    )
   )
 ```
 
@@ -205,28 +218,32 @@ imported_data <- imported_data |>
     agent_info = purrr::map(
       .data$pb_agent,
       ~ create_informant(agent = .x) |>
-          info_columns(
-            columns = "NHS England Region",
-            `Regions` = "Contains {n_regions} regions in England, including: {region_list}"
-          ) |>
-          info_columns(
-            columns = "Code",
-            `Code` = "Short code for each Trust. Examples include: {code_list}",
-          ) |>
-          info_columns(
-            columns = "Name",
-            `Name` = "Trust names. Examples include: {trust_list}"
-          ) |>
-          info_columns(
-            columns = contains("flu beds"),
-            `DESCRIPTION` = "Number of flu beds taken by confirmed flu cases."
-          ) |>
-          info_snippet("n_regions", ~ . %>% dplyr::pull("NHS England Region") %>% unique() %>% length()) |>
-          info_snippet("region_list", snip_list("NHS England Region", limit = 6)) |>
-          info_snippet("code_list", snip_list("Code", limit = 10)) |>
-          info_snippet("trust_list", snip_list("Name", limit = 5)) |>
-          incorporate() |>
-          get_informant_report()
+        info_columns(
+          columns = "NHS England Region",
+          `Regions` = "Contains {n_regions} regions in England, including: {region_list}"
+        ) |>
+        info_columns(
+          columns = "Code",
+          `Code` = "Short code for each Trust. Examples include: {code_list}",
+        ) |>
+        info_columns(
+          columns = "Name",
+          `Name` = "Trust names. Examples include: {trust_list}"
+        ) |>
+        info_columns(
+          columns = contains("flu beds"),
+          `DESCRIPTION` = "Number of flu beds taken by confirmed flu cases."
+        ) |>
+        info_snippet("n_regions",
+                     ~ . %>%
+                       dplyr::pull("NHS England Region") %>%
+                       unique() %>%
+                       length()) |>
+        info_snippet("region_list", snip_list("NHS England Region", limit = 6)) |>
+        info_snippet("code_list", snip_list("Code", limit = 10)) |>
+        info_snippet("trust_list", snip_list("Name", limit = 5)) |>
+        incorporate() |>
+        get_informant_report()
     )
   )
 ```
@@ -263,11 +280,13 @@ imported_data <- imported_data |>
     data_type_check = purrr::map(
       .data$pb_agent,
       ~ .x |>
-          col_is_character(c("NHS England Region", "Code", "Name")) |>
-          col_is_numeric(contains("flu beds")) |>
-          rows_distinct(c("Code", "Name"), preconditions = ~ . %>% tidyr::drop_na()) |>
-          col_vals_gte(contains("flu beds"), value = 0, na_pass = TRUE) |>
-          interrogate()
+        col_is_character(c("NHS England Region", "Code", "Name")) |>
+        col_is_numeric(contains("flu beds")) |>
+        rows_distinct(c("Code", "Name"),
+                      preconditions = ~ . %>%
+                        tidyr::drop_na()) |>
+        col_vals_gte(contains("flu beds"), value = 0, na_pass = TRUE) |>
+        interrogate()
     )
   )
 ```
@@ -313,17 +332,17 @@ imported_data <- imported_data |>
     data_dates = purrr::map(
       .data$temp_dest,
       ~ read_excel(
-          path = .x,
-          sheet = "Flu",
-          col_names = FALSE,
-          col_type = "date",
-          skip = 13,
-          n_max = 1
-        ) |>
-          pivot_longer(cols = everything(), names_to = "column_index", values_to = "date") |>
-          add_row(date = NA) |>
-          mutate(date = as.Date(date), .keep = "none") |>
-          fill("date", .direction = "down")
+        path = .x,
+        sheet = "Flu",
+        col_names = FALSE,
+        col_type = "date",
+        skip = 13,
+        n_max = 1
+      ) |>
+        pivot_longer(cols = everything(), names_to = "column_index", values_to = "date") |>
+        add_row(date = NA) |>
+        mutate(date = as.Date(date), .keep = "none") |>
+        fill("date", .direction = "down")
     )
   )
 
@@ -342,12 +361,12 @@ on.exit(unlink(new_metadata$temp_dest[new_metadata$to_download]))
 agent_report <- purrr::map(
   imported_data$data_dates,
   ~ create_informant(.x) |>
-      info_columns(columns = "date",
-                   `Date range` = "Dates range from {earliest_date} to {latest_date}.") |>
-      info_snippet("earliest_date", snip_lowest("date")) |>
-      info_snippet("latest_date", snip_highest("date")) |>
-      incorporate() |>
-      get_informant_report()
+    info_columns(columns = "date",
+                 `Date range` = "Dates range from {earliest_date} to {latest_date}.") |>
+    info_snippet("earliest_date", snip_lowest("date")) |>
+    info_snippet("latest_date", snip_highest("date")) |>
+    incorporate() |>
+    get_informant_report()
 )
 
 purrr::walk2(
@@ -379,15 +398,15 @@ Only failing checks are shown:
 agent_report <- purrr::map(
   imported_data$data_dates,
   ~ .x |>
-      select(contains("flu beds")) |>
-      create_agent() |>
-      col_count_match(
-        count = nrow(.x),
-        label = "Correct number of flu count columns",
-        brief = "Number of columns of flu bed data matches number of dates read from file."
-      ) |>
-      interrogate() |>
-      get_agent_report(keep = "fail_states")
+    select(contains("flu beds")) |>
+    create_agent() |>
+    col_count_match(
+      count = nrow(.x),
+      label = "Correct number of flu count columns",
+      brief = "Number of columns of flu bed data matches number of dates read from file."
+    ) |>
+    interrogate() |>
+    get_agent_report(keep = "fail_states")
 )
 
 purrr::walk2(
@@ -413,7 +432,7 @@ imported_data <- imported_data |>
     data_reformat = purrr::map2(
       .data$raw_import, .data$data_dates,
       ~ .x |>
-        mutate(across(c("NHS England Region", "Code", "Name"), factor)) |> 
+        mutate(across(c("NHS England Region", "Code", "Name"), factor)) |>
         pivot_longer(cols = contains("flu beds"),
                      names_to = "Type",
                      values_to = "Occupancy",
@@ -470,45 +489,45 @@ imported_data <- imported_data |>
     reformat_agent = purrr::map2(
       .data$data_reformat, .data$data_dates,
       ~ create_agent(
-          tbl = .x,
-          tbl_name = "Imported Flu data",
-          label = "Flu count data in long data format."
+        tbl = .x,
+        tbl_name = "Imported Flu data",
+        label = "Flu count data in long data format."
+      ) |>
+        col_is_factor(columns = vars("nhs_england_region", "code", "name", "bed_type")) |>
+        col_is_date(columns = "date") |>
+        col_is_integer(columns = "occupancy") |>
+        col_vals_gte(column = "occupancy", value = 0, na_pass = FALSE) |>
+        col_vals_make_set(
+          columns = "date",
+          set = .y$date,
+          preconditions = . %>% dplyr::filter(bed_type == "CC"),
+          segments = vars(code),
+          label = "Trust {.seg_val} has CC data available on every date",
+          brief = "For each Trust, every date value appears at least once for the CC bed type."
         ) |>
-          col_is_factor(columns = vars("nhs_england_region", "code", "name", "bed_type")) |>
-          col_is_date(columns = "date") |>
-          col_is_integer(columns = "occupancy") |>
-          col_vals_gte(column = "occupancy", value = 0, na_pass = FALSE) |>
-          col_vals_make_set(
-            columns = "date",
-            set = .y$date,
-            preconditions = . %>% dplyr::filter(bed_type == "CC"),
-            segments = vars(code),
-            label = "Trust {.seg_val} has CC data available on every date",
-            brief = "For each Trust, every date value appears at least once for the CC bed type."
-          ) |>
-          col_vals_make_set(
-            columns = "date",
-            set = .y$date,
-            preconditions = . %>% dplyr::filter(bed_type == "G&A"),
-            segments = vars(code),
-            label = "Trust {.seg_val} has G&A data available on every date",
-            brief = "For each trust, every date value appears at least once for the G&A bed type."
-          ) |>
-          rows_distinct(
-            columns = "date",
-            preconditions = . %>% dplyr::filter(bed_type == "CC"),
-            segments = vars(code),
-            label = "Trust {.seg_val} has no duplicate dates for CC beds.",
-            brief = "For each trust, every date value does not appear more than once for the CC bed type."
-          ) |>
-          rows_distinct(
-            columns = "date",
-            preconditions = . %>% dplyr::filter(bed_type == "G&A"),
-            segments = vars(code),
-            label = "Trust {.seg_val} has no duplicate dates for G&A beds.",
-            brief = "For each trust, every date value does not appear more than once for the G&A bed type."
-          ) |>
-          interrogate()
+        col_vals_make_set(
+          columns = "date",
+          set = .y$date,
+          preconditions = . %>% dplyr::filter(bed_type == "G&A"),
+          segments = vars(code),
+          label = "Trust {.seg_val} has G&A data available on every date",
+          brief = "For each trust, every date value appears at least once for the G&A bed type."
+        ) |>
+        rows_distinct(
+          columns = "date",
+          preconditions = . %>% dplyr::filter(bed_type == "CC"),
+          segments = vars(code),
+          label = "Trust {.seg_val} has no duplicate dates for CC beds.",
+          brief = "For each trust, every date value does not appear more than once for the CC bed type." #nolint: line_length_linter
+        ) |>
+        rows_distinct(
+          columns = "date",
+          preconditions = . %>% dplyr::filter(bed_type == "G&A"),
+          segments = vars(code),
+          label = "Trust {.seg_val} has no duplicate dates for G&A beds.",
+          brief = "For each trust, every date value does not appear more than once for the G&A bed type." #nolint: line_length_linter
+        ) |>
+        interrogate()
     )
   )
 ```
@@ -573,7 +592,9 @@ all_uploaded <- purrr::pmap(
         }
       )
     } else {
-      cli::cli_alert_danger("Data was not exported because the data quality checks did not fully pass.")
+      cli::cli_alert_danger(
+        "Data was not exported because the data quality checks did not fully pass."
+      )
     }
   }
 )

@@ -2,9 +2,9 @@
 #'
 #' One value box for showing the change in bed occupancy over a given time period
 #'
-#' @param period_label Character description of the time period that will be quoted in the value box title.
-#'   The title will be prefixed with the words "Change since", before printing your period label afterwards.
-#'   Aim to keep this concise.
+#' @param period_label Character description of the time period that will be quoted in the value box
+#'   title. The title will be prefixed with the words "Change since", before printing your period
+#'   label afterwards. Aim to keep this concise.
 #' @inheritParams value_box_row_ui
 #' @rdname value_box_change
 value_box_change_ui <- function(id, period_label) {

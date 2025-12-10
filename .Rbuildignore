@@ -7,3 +7,4 @@
 ^renv\.lock$
 ^manifest.json$
 ^rsconnect/
+^\.github$

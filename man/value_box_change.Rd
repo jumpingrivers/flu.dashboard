@@ -12,9 +12,9 @@ value_box_change_server(id, filtered_data, time_period)
 \arguments{
 \item{id}{Unique Shiny module ID to link the UI and Server components together.}
 
-\item{period_label}{Character description of the time period that will be quoted in the value box title.
-The title will be prefixed with the words "Change since", before printing your period label afterwards.
-Aim to keep this concise.}
+\item{period_label}{Character description of the time period that will be quoted in the value box
+title. The title will be prefixed with the words "Change since", before printing your period
+label afterwards. Aim to keep this concise.}
 
 \item{filtered_data}{A \link[shiny:reactiveValues]{shiny::reactiveValues} object containing an entry called \code{full} which has
 the data only for the trusts selected in the user's filtering options.}

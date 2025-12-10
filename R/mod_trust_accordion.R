@@ -1,5 +1,5 @@
 trust_accordion_filter_ui <- function(id, trust_list) {
-  ns = shiny::NS(id)
+  ns <- shiny::NS(id)
   # Generate each accordion panel in a map.
   panels <- trust_list |>
     tibble::as_tibble() |>
