@@ -1,3 +1,8 @@
+# flu.dashboard 0.1.4
+
+* fix: Pointblank needs the magrittr pipe rather than native pipe.
+This unwinds the change in v0.1.3.
+
 # flu.dashboard 0.1.3
 
 * Change `%>%` for `|>` to satisfy lintr

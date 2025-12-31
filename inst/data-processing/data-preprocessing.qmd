@@ -235,9 +235,9 @@ imported_data <- imported_data |>
           `DESCRIPTION` = "Number of flu beds taken by confirmed flu cases."
         ) |>
         info_snippet("n_regions",
-                     ~ . |>
-                       dplyr::pull("NHS England Region") |>
-                       unique() |>
+                     ~ . %>% # nolint: pipe_consistency_linter
+                       dplyr::pull("NHS England Region") %>% # nolint: pipe_consistency_linter
+                       unique() %>% # nolint: pipe_consistency_linter
                        length()) |>
         info_snippet("region_list", snip_list("NHS England Region", limit = 6)) |>
         info_snippet("code_list", snip_list("Code", limit = 10)) |>
@@ -283,7 +283,7 @@ imported_data <- imported_data |>
         col_is_character(c("NHS England Region", "Code", "Name")) |>
         col_is_numeric(contains("flu beds")) |>
         rows_distinct(c("Code", "Name"),
-                      preconditions = ~ . |>
+                      preconditions = ~ . %>% # nolint: pipe_consistency_linter
                         tidyr::drop_na()) |>
         col_vals_gte(contains("flu beds"), value = 0, na_pass = TRUE) |>
         interrogate()
@@ -500,7 +500,7 @@ imported_data <- imported_data |>
         col_vals_make_set(
           columns = "date",
           set = .y$date,
-          preconditions = . |> dplyr::filter(bed_type == "CC"),
+          preconditions = ~ . %>% dplyr::filter(bed_type == "CC"), # nolint: pipe_consistency_linter
           segments = vars(code),
           label = "Trust {.seg_val} has CC data available on every date",
           brief = "For each Trust, every date value appears at least once for the CC bed type."
@@ -508,21 +508,21 @@ imported_data <- imported_data |>
         col_vals_make_set(
           columns = "date",
           set = .y$date,
-          preconditions = . |> dplyr::filter(bed_type == "G&A"),
+          preconditions = ~ . %>% dplyr::filter(bed_type == "G&A"), # nolint: pipe_consistency_linter
           segments = vars(code),
           label = "Trust {.seg_val} has G&A data available on every date",
           brief = "For each trust, every date value appears at least once for the G&A bed type."
         ) |>
         rows_distinct(
           columns = "date",
-          preconditions = . |> dplyr::filter(bed_type == "CC"),
+          preconditions = ~ . %>% dplyr::filter(bed_type == "CC"), # nolint: pipe_consistency_linter
           segments = vars(code),
           label = "Trust {.seg_val} has no duplicate dates for CC beds.",
           brief = "For each trust, every date value does not appear more than once for the CC bed type." #nolint: line_length_linter
         ) |>
         rows_distinct(
           columns = "date",
-          preconditions = . |> dplyr::filter(bed_type == "G&A"),
+          preconditions = ~ . %>% dplyr::filter(bed_type == "G&A"), # nolint: pipe_consistency_linter
           segments = vars(code),
           label = "Trust {.seg_val} has no duplicate dates for G&A beds.",
           brief = "For each trust, every date value does not appear more than once for the G&A bed type." #nolint: line_length_linter
