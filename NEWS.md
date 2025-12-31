@@ -2,6 +2,7 @@
 
 * fix: Pointblank needs the magrittr pipe rather than native pipe.
 This unwinds the change in v0.1.3.
+* Update roxygen2 version in DESCRIPTION
 
 # flu.dashboard 0.1.3
 
