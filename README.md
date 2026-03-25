@@ -24,6 +24,28 @@ CONNECT_API_KEY=AbCdE123456f
 
 Replacing the placeholders with the value for your server address and API key.
 
+You should not upload the .Renviron file as part of your bundle when deploying the application.
+
+If the dashboard and the pre-processed data pins are deployed to the same Posit Connect server by the same user, these environment variables do not need to be configured for the application.
+Posit Connect will handle the authentication automatically.
+
+## Pins username
+
+The file at *inst/config.yml* is used to set the filename where pins are stored and the Posit Connect username that hosts the pin.
+
+In order to load pins from the correct account name, you need to set your Posit Connect username in the `pins_username` variable.
+The default setting is
+
+```yaml
+default:
+  pins_username: !expr Sys.getenv("PINS_USERNAME", unset = "your_username")
+```
+
+This allows you to define your username either as (in order of priority):
+
+- An environment variable called `PINS_USERNAME`
+- By replacing the `your_username` placeholder in the *inst/config.yml* file.
+
 ## For application users
 
 To install the application, use:

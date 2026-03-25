@@ -1,0 +1,4 @@
+default:
+  metadata_name_template: "nhs_flu_sources_metadata"
+  fulldata_name_template: "nhs_flu_%d_full"
+  pins_username: !expr Sys.getenv("PINS_USERNAME", unset = "your_username")
