@@ -1,3 +1,13 @@
+# flu.dashboard 0.1.6
+
+* Move config into data-preprocessing script folder
+
+# flu.dashboard 0.1.5
+
+* Allow pins location to be defined in the config file and the username as an environment variable.
+* Add link to GitHub repository in navbar.
+* Update packages, R version, and manifest files.
+
 # flu.dashboard 0.1.4
 
 * fix: Pointblank needs the magrittr pipe rather than native pipe.

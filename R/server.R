@@ -10,7 +10,9 @@
 #' @keywords internal
 server <- function(input, output, session) {
   selected_trusts <- trust_filter_server(id = "trust_filter")
-  cfg <- config::get(file = system.file("config.yml", package = "flu.dashboard"))
+  cfg <- config::get(
+    file = system.file("data-preprocessing", "config.yml", package = "flu.dashboard")
+  )
 
   bed_usage_server(
     id = "flu",
