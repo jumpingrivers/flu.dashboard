@@ -1,3 +1,7 @@
+# flu.dashboard 0.1.9
+
+* Add missing package to renv.lock
+
 # flu.dashboard 0.1.8
 
 * Fix: Correction to pins file names

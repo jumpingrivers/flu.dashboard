@@ -465,6 +465,12 @@
       "Maintainer": "Kirill Müller <kirill@cynkra.com>",
       "Repository": "CRAN"
     },
+    "brand.yml": {
+      "Package": "brand.yml",
+      "Version": "0.1.0",
+      "Source": "Repository",
+      "Repository": "CRAN"
+    },
     "brew": {
       "Package": "brew",
       "Version": "1.0-10",
