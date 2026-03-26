@@ -47,7 +47,8 @@ Data can be found on
 ```{r}
 #| label: set-download-options
 #| echo: false
-sitrep_sources_metadata <- config::get("metadata_name_template")
+cfg <- config::get()
+sitrep_sources_metadata <- file.path(cfg$pins_username, cfg$metadata_name_template, fsep = "/")
 
 check_old_md5 <- TRUE
 force_old_recompute <- FALSE
@@ -578,7 +579,9 @@ all_uploaded <- purrr::pmap(
           pin_name <- pin_write(
             board = board,
             x = data_reformat,
-            name = sprintf(config::get("fulldata_name_template"), year),
+            name = file.path(cfg$pins_username,
+                             sprintf(cfg$fulldata_name_template, year),
+                             fsep = "/"),
             type = "parquet",
             title = paste("NHS flu", year),
             description = paste("Full", year, "data of NHS England bed occupancy where the patient",
@@ -615,7 +618,9 @@ board <- board_connect(auth = "envvar")
 pin_name <- pin_write(
   board = board,
   x = final_metadata,
-  name = config::get("metadata_name_template"),
+  name = file.path(cfg$pins_username,
+                   sprintf(cfg$metadata_name_template, year),
+                   fsep = "/"),
   type = "parquet",
   title = "NHS Flu Data Sources",
   description = paste("Metadata containing the last MD5 sums",

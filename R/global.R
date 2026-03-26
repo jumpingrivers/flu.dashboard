@@ -2,7 +2,7 @@ global <- function() {
   board_ref <<- pins::board_connect(auth = "envvar") # nolint: object_usage_linter
 
   cfg <- config::get(
-    file = system.file("data-preprocessing", "config.yml", package = "flu.dashboard")
+    file = system.file("data-processing", "config.yml", package = "flu.dashboard")
   )
 
   trust_list <<- get_trust_list(

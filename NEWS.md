@@ -1,3 +1,7 @@
+# flu.dashboard 0.1.8
+
+* Fix: Correction to pins file names
+
 # flu.dashboard 0.1.7
 
 * Fix minor linting issue

@@ -5091,13 +5091,13 @@
       "checksum": "edc9ead55cf40a2742a8cad5511f5385"
     },
     ".Rprofile": {
-      "checksum": "06bd7e4e8f215773c10c1b9da66b5fa5"
+      "checksum": "c1a905bf16e5b5614bf947fbb65159e5"
     },
     "app.R": {
       "checksum": "f3f36cce398a9cf8f3d620291ee5324f"
     },
     "DESCRIPTION": {
-      "checksum": "f80ed3b7841935cff941b9640f7ac2b3"
+      "checksum": "35ef79330abcd8675d6b128a660ed354"
     },
     "inst/about/about_how_it_works.md": {
       "checksum": "d9f9cd1ccc141908c37a921194f53f2a"
@@ -5127,7 +5127,7 @@
       "checksum": "b9f1df1206b28784d2e1f5d47b808a9b"
     },
     "inst/data-processing/data-preprocessing.qmd": {
-      "checksum": "5697fcc2ca0a8fbf5e2bac017c1719be"
+      "checksum": "61a7bcb1a35401d41e14a15323c0050d"
     },
     "inst/img/.gitkeep": {
       "checksum": "d41d8cd98f00b204e9800998ecf8427e"
@@ -5184,7 +5184,7 @@
       "checksum": "54bac31f81d5cddf7426d1ae67483f2a"
     },
     "NEWS.md": {
-      "checksum": "c63b4094ead910f0fe0973961f3335f8"
+      "checksum": "3f47cd0bd4708899d02dca49f7e49b41"
     },
     "R/about_page.R": {
       "checksum": "f165a84d1490948976872e7b48fae686"
@@ -5199,7 +5199,7 @@
       "checksum": "e5cd7d94af6551d4692e8dcafc7493ea"
     },
     "R/global.R": {
-      "checksum": "3cdf6ad22939a6e21e0e77203de51ef9"
+      "checksum": "f420c3fed5632020cccb864a7794c66f"
     },
     "R/load_all_data.R": {
       "checksum": "b38bcf75525516e765433ba1a7905578"
@@ -5241,7 +5241,7 @@
       "checksum": "fbf7ed47f024db3a7074940c50da1aa2"
     },
     "R/server.R": {
-      "checksum": "bd40b4485eeb296ed7a68bd646cbec5d"
+      "checksum": "f39aec4109091299daa9ce4f67a7578c"
     },
     "R/ui.R": {
       "checksum": "24f3586e11fb6c7ac38b5e15a7ece179"
