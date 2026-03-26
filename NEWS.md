@@ -1,3 +1,7 @@
+# flu.dashboard 0.1.7
+
+* Fix minor linting issue
+
 # flu.dashboard 0.1.6
 
 * Move config into data-preprocessing script folder

@@ -618,7 +618,8 @@ pin_name <- pin_write(
   name = config::get("metadata_name_template"),
   type = "parquet",
   title = "NHS Flu Data Sources",
-  description = "Metadata containing the last MD5 sums for each of the previous year's worth of data."
+  description = paste("Metadata containing the last MD5 sums",
+                      "for each of the previous year's worth of data.")
 )
 ```
 
